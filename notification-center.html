@@ -1,0 +1,941 @@
+<!-- Notification Center Component -->
+<!-- Add this to any page that needs notifications -->
+
+<style>
+/* Notification Center Styles */
+.notification-center {
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    width: 380px;
+    max-height: 80vh;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    z-index: 1001;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    border: 1px solid #e1e5e9;
+    overflow: hidden;
+}
+
+.notification-center.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.notification-center-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.3);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.notification-center-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.notif-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e1e5e9;
+    background: #f8fafc;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.notif-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.notif-header .close-btn {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: #666;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.notif-header .close-btn:hover {
+    background: #eee;
+    color: #333;
+}
+
+.notif-controls {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e1e5e9;
+    background: #fefefe;
+}
+
+.notif-stats {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.stat-count {
+    background: #667eea;
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    min-width: 20px;
+    text-align: center;
+}
+
+.notif-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.notif-action-btn {
+    background: #f1f5f9;
+    border: 1px solid #d1d5db;
+    color: #475569;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.notif-action-btn:hover {
+    background: #e2e8f0;
+    border-color: #667eea;
+    color: #667eea;
+}
+
+.notif-action-btn:active {
+    transform: translateY(1px);
+}
+
+.notif-search {
+    padding: 0.5rem 1.5rem;
+    border-bottom: 1px solid #e1e5e9;
+}
+
+.notif-search input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
+.notif-search input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.notif-filters {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.5rem 1.5rem;
+    border-bottom: 1px solid #e1e5e9;
+    overflow-x: auto;
+}
+
+.notif-filter {
+    background: #f8fafc;
+    border: 1px solid #e1e5e9;
+    color: #475569;
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+}
+
+.notif-filter:hover {
+    background: #e2e8f0;
+}
+
+.notif-filter.active {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+.notif-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.notif-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.notif-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.notif-list::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+.notif-list::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+.notif-item {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #f1f5f9;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.notif-item:hover {
+    background: #f8fafc;
+}
+
+.notif-item.unread {
+    background: #fff9e6;
+    border-left: 4px solid #fbbf24;
+}
+
+.notif-item.unread::after {
+    content: '';
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 8px;
+    height: 8px;
+    background: #fbbf24;
+    border-radius: 50%;
+}
+
+.notif-item-content {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.notif-icon {
+    width: 40px;
+    height: 40px;
+    background: #667eea;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.notif-details {
+    flex: 1;
+}
+
+.notif-title {
+    font-weight: 600;
+    margin: 0 0 0.25rem 0;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.notif-message {
+    margin: 0;
+    font-size: 0.8rem;
+    color: #666;
+    line-height: 1.4;
+}
+
+.notif-meta {
+    margin-top: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.notif-time {
+    font-size: 0.7rem;
+    color: #999;
+}
+
+.notif-type {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 10px;
+    font-weight: 500;
+}
+
+.notif-type.event { background: #dbedff; color: #2969f5; }
+.notif-type.social { background: #d4edda; color: #198754; }
+.notif-type.system { background: #fff3cd; color: #fd7e14; }
+.notif-type.urgent { background: #f8d7da; color: #dc3545; }
+
+.notif-item .notif-actions {
+    margin-top: 0.75rem;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.notif-action {
+    background: #f8fafc;
+    border: 1px solid #e1e5e9;
+    color: #475569;
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.notif-action:hover {
+    background: #e2e8f0;
+    border-color: #667eea;
+    color: #667eea;
+}
+
+.notif-empty {
+    padding: 3rem;
+    text-align: center;
+    color: #666;
+}
+
+.notif-empty i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #e2e8f0;
+}
+
+.notif-empty h4 {
+    margin: 0 0 1rem 0;
+    font-size: 1.2rem;
+}
+
+.notif-empty p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+/* In-App Notification Styles */
+.in-app-notification {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    margin-bottom: 1rem;
+    max-width: 400px;
+    overflow: hidden;
+    pointer-events: auto;
+    animation: slideInFromRight 0.5s ease-out;
+    border-left: 4px solid #667eea;
+}
+
+.in-app-notification .notif-item-content {
+    padding: 0;
+}
+
+.in-app-notification .notif-details {
+    padding: 1rem;
+}
+
+.in-app-notification .notification-icon {
+    width: 50px;
+    height: 50px;
+    background: #667eea;
+    color: white;
+    border-radius: 8px 0 0 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.in-app-notification .dismiss-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #999;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+.in-app-notification .dismiss-btn:hover {
+    opacity: 1;
+    color: #666;
+}
+
+@keyframes slideInFromRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 100%;
+    }
+}
+
+/* Preference Panel */
+.notif-preferences {
+    padding: 1.5rem;
+    background: #f8fafc;
+    border-top: 1px solid #e1e5e9;
+}
+
+.pref-group {
+    margin-bottom: 1.5rem;
+}
+
+.pref-group h4 {
+    margin: 0 0 1rem 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.pref-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.pref-label {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.pref-toggle {
+    position: relative;
+    width: 40px;
+    height: 24px;
+}
+
+.pref-toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.pref-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #ccc;
+    border-radius: 24px;
+    transition: 0.3s;
+}
+
+.pref-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    top: 3px;
+    background: white;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.pref-toggle input:checked + .pref-slider {
+    background: #667eea;
+}
+
+.pref-toggle input:checked + .pref-slider:before {
+    transform: translateX(16px);
+}
+
+/* Mobile Responsive */
+@media (max-width: 480px) {
+    .notification-center {
+        top: 70px;
+        right: 10px;
+        left: 10px;
+        width: auto;
+    }
+
+    .notif-item-content {
+        gap: 0.75rem;
+    }
+
+    .notif-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
+    }
+
+    .in-app-notification {
+        max-width: 100%;
+        margin: 0 15px;
+    }
+}
+</style>
+
+<div class="notification-center" id="notificationCenter">
+    <div class="notif-header">
+        <h3><i class="fas fa-bell"></i> Notifications</h3>
+        <button class="close-btn" onclick="hideNotificationCenter()">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <div class="notif-controls">
+        <div class="notif-stats">
+            <div class="stat-item">
+                <i class="fas fa-circle-dot"></i>
+                <span id="notifUnreadCount">0</span> Unread
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-list"></i>
+                <span id="notifTotalCount">0</span> Total
+            </div>
+        </div>
+
+        <div class="notif-actions">
+            <button class="notif-action-btn" onclick="markAllAsRead()">
+                <i class="fas fa-check-double"></i> Mark Read
+            </button>
+            <button class="notif-action-btn" onclick="clearAllNotifications()">
+                <i class="fas fa-trash"></i> Clear
+            </button>
+            <button class="notif-action-btn" onclick="togglePreferences()">
+                <i class="fas fa-cog"></i> Settings
+            </button>
+        </div>
+    </div>
+
+    <div class="notif-search">
+        <input type="text" id="notifSearchInput" placeholder="Search notifications..." oninput="filterNotifications()">
+    </div>
+
+    <div class="notif-filters">
+        <button class="notif-filter active" onclick="filterNotifications('all')">All</button>
+        <button class="notif-filter" onclick="filterNotifications('unread')">Unread</button>
+        <button class="notif-filter" onclick="filterNotifications('event')">Events</button>
+        <button class="notif-filter" onclick="filterNotifications('social')">Social</button>
+        <button class="notif-filter" onclick="filterNotifications('system')">System</button>
+        <button class="notif-filter" onclick="filterNotifications('urgent')">Urgent</button>
+    </div>
+
+    <div class="notif-list" id="notifList">
+        <div class="notif-empty" id="notifEmpty">
+            <i class="fas fa-bell-slash"></i>
+            <h4>No notifications</h4>
+            <p>You'll see updates about events and activities here.</p>
+        </div>
+    </div>
+
+    <div class="notif-preferences" id="notifPreferences" style="display: none;">
+        <div class="pref-group">
+            <h4>🔕 Notification Types</h4>
+            <div class="pref-option">
+                <span class="pref-label">📅 Events & Reminders</span>
+                <label class="pref-toggle">
+                    <input type="checkbox" checked id="prefEvents" onchange="updatePreference('events', this.checked)">
+                    <span class="pref-slider"></span>
+                </label>
+            </div>
+            <div class="pref-option">
+                <span class="pref-label">👥 Social Activity</span>
+                <label class="pref-toggle">
+                    <input type="checkbox" checked id="prefSocial" onchange="updatePreference('social', this.checked)">
+                    <span class="pref-slider"></span>
+                </label>
+            </div>
+            <div class="pref-option">
+                <span class="pref-label">🛠️ System Updates</span>
+                <label class="pref-toggle">
+                    <input type="checkbox" checked id="prefSystem" onchange="updatePreference('system', this.checked)">
+                    <span class="pref-slider"></span>
+                </label>
+            </div>
+            <div class="pref-option">
+                <span class="pref-label">🚨 Urgent Alerts</span>
+                <label class="pref-toggle">
+                    <input type="checkbox" checked id="prefUrgent" onchange="updatePreference('urgent', this.checked)">
+                    <span class="pref-slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <div class="pref-group">
+            <h4>🔊 Notification Settings</h4>
+            <div class="pref-option">
+                <span class="pref-label">🔔 Browser Notifications</span>
+                <label class="pref-toggle">
+                    <input type="checkbox" checked id="prefBrowser" onchange="updatePreference('browser', this.checked)">
+                    <span class="pref-slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+            <button class="notif-action-btn" onclick="testNotifications()">
+                <i class="fas fa-play"></i> Test
+            </button>
+            <button class="notif-action-btn" onclick="requestNotificationPermission()">
+                <i class="fas fa-bell"></i> Request Permission
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="notification-center-overlay" id="notificationOverlay" onclick="hideNotificationCenter()"></div>
+
+<script>
+let currentFilter = 'all';
+let searchTerm = '';
+let showingPreferences = false;
+
+// Initialize notification center
+document.addEventListener('DOMContentLoaded', function() {
+    initializeNotificationCenter();
+
+    // Listen for notification data changes
+    if (window.NotificationManager) {
+        window.NotificationManager.updateNotificationBadge = function() {
+            renderNotifications();
+            updateStats();
+        };
+    }
+});
+
+function initializeNotificationCenter() {
+    renderNotifications();
+    updateStats();
+
+    // Auto-refresh notifications every minute
+    setInterval(() => {
+        if (document.getElementById('notificationCenter').classList.contains('active')) {
+            renderNotifications();
+        }
+    }, 60000);
+}
+
+function showNotificationCenter() {
+    document.getElementById('notificationCenter').classList.add('active');
+    document.getElementById('notificationOverlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    // Auto-scroll to top of notifications
+    const notifList = document.getElementById('notifList');
+    if (notifList) notifList.scrollTop = 0;
+
+    renderNotifications();
+}
+
+function hideNotificationCenter() {
+    document.getElementById('notificationCenter').classList.remove('active');
+    document.getElementById('notificationOverlay').classList.remove('active');
+    document.body.style.overflow = '';
+
+    // Hide preferences
+    showingPreferences = false;
+    const prefDiv = document.getElementById('notifPreferences');
+    if (prefDiv) prefDiv.style.display = 'none';
+
+    // Reset filters to show active filter
+    document.querySelector('.notif-filter.active')?.classList.remove('active');
+    document.querySelector('.notif-filter').classList.add('active');
+    currentFilter = 'all';
+    searchTerm = '';
+    document.getElementById('notifSearchInput').value = '';
+}
+
+function renderNotifications() {
+    const notifList = document.getElementById('notifList');
+    const notifEmpty = document.getElementById('notifEmpty');
+
+    if (!window.NotificationManager) {
+        console.warn('NotificationManager not available');
+        return;
+    }
+
+    const notifications = window.NotificationManager.getNotifications();
+
+    if (!notifications || notifications.length === 0) {
+        notifList.innerHTML = '<div class="notif-empty"><i class="fas fa-bell-slash"></i><h4>No notifications</h4><p>You\'ll see updates about events and activities here.</p></div>';
+        return;
+    }
+
+    // Filter notifications
+    let filtered = notifications.filter(notif => {
+        // Filter by type
+        if (currentFilter !== 'all') {
+            if (currentFilter === 'unread') return !notif.read;
+            if (notif.type !== currentFilter) return false;
+        }
+
+        // Filter by search
+        if (searchTerm) {
+            const titleMatch = notif.title.toLowerCase().includes(searchTerm);
+            const messageMatch = notif.message.toLowerCase().includes(searchTerm);
+            return titleMatch || messageMatch;
+        }
+
+        return true;
+    });
+
+    if (filtered.length === 0) {
+        notifList.innerHTML = '<div class="notif-empty"><i class="fas fa-search"></i><h4>No matching notifications</h4><p>Try adjusting your filters or search terms.</p></div>';
+        return;
+    }
+
+    // Render notifications
+    const notificationsHtml = filtered.map(notif => `
+        <div class="notif-item ${notif.read ? '' : 'unread'}" onclick="handleNotificationClick('${notif.id}')">
+            <div class="notif-item-content">
+                <div class="notif-icon">
+                    <i class="fas fa-${getNotificationIcon(notif.type)}"></i>
+                </div>
+                <div class="notif-details">
+                    <h4 class="notif-title">${notif.title}</h4>
+                    <p class="notif-message">${notif.message}</p>
+                    <div class="notif-meta">
+                        <span class="notif-time">${formatNotificationTime(notif.timestamp)}</span>
+                        <span class="notif-type ${notif.type}">${capitalizeFirst(notif.type)}</span>
+                    </div>
+                </div>
+            </div>
+            ${notif.persistent ? `
+                <div class="notif-actions">
+                    <button class="notif-action" onclick="event.stopPropagation(); handleNotificationAction('view', '${notif.id}')">View</button>
+                    <button class="notif-action" onclick="event.stopPropagation(); handleNotificationAction('dismiss', '${notif.id}')">Dismiss</button>
+                </div>
+            ` : ''}
+        </div>
+    `).join('');
+
+    notifList.innerHTML = notificationsHtml;
+    notifEmpty.style.display = 'none';
+}
+
+function updateStats() {
+    if (!window.NotificationManager) return;
+
+    const unreadCount = window.NotificationManager.getUnreadCount();
+    const totalCount = window.NotificationManager.getNotifications().length;
+
+    document.getElementById('notifUnreadCount').textContent = unreadCount;
+    document.getElementById('notifTotalCount').textContent = totalCount;
+}
+
+function filterNotifications(filter = 'all') {
+    // Update active filter button
+    document.querySelectorAll('.notif-filter').forEach(btn => {
+        btn.classList.remove('active');
+    });
+
+    // Handle method call with filter parameter
+    if (typeof filter === 'string') {
+        currentFilter = filter;
+        const btn = Array.from(document.querySelectorAll('.notif-filter')).find(button =>
+            button.textContent.toLowerCase() === filter.toLowerCase() ||
+            (filter === 'all' && button.textContent === 'All')
+        );
+        if (btn) btn.classList.add('active');
+    } else {
+        // Handle button click event
+        const clickedBtn = filter.target;
+        currentFilter = clickedBtn.textContent.toLowerCase();
+
+        document.querySelectorAll('.notif-filter').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        clickedBtn.classList.add('active');
+    }
+
+    renderNotifications();
+}
+
+function filterNotificationsBySearch() {
+    searchTerm = document.getElementById('notifSearchInput').value.toLowerCase();
+    renderNotifications();
+}
+
+function handleNotificationClick(notificationId) {
+    if (!window.NotificationManager) return;
+
+    // Mark as read
+    window.NotificationManager.markAsRead(notificationId);
+
+    // Here you would navigate to the relevant page or perform action
+    console.log('Notification clicked:', notificationId);
+
+    // For demo, we'll just show an alert
+    const notification = window.NotificationManager.getNotifications().find(n => n.id === notificationId);
+    if (notification) {
+        alert(`Notification: ${notification.title}\n\n${notification.message}`);
+    }
+}
+
+function handleNotificationAction(action, notificationId) {
+    switch (action) {
+        case 'view':
+            handleNotificationClick(notificationId);
+            break;
+        case 'dismiss':
+            if (confirm('Are you sure you want to dismiss this notification?')) {
+                window.NotificationManager?.removeNotification(notificationId);
+                renderNotifications();
+                updateStats();
+            }
+            break;
+        default:
+            console.log('Unknown notification action:', action);
+    }
+}
+
+function markAllAsRead() {
+    if (!window.NotificationManager) return;
+
+    if (confirm('Mark all notifications as read?')) {
+        window.NotificationManager.markAllAsRead();
+        renderNotifications();
+        updateStats();
+    }
+}
+
+function clearAllNotifications() {
+    if (!window.NotificationManager) return;
+
+    const count = window.NotificationManager.getNotifications().length;
+    if (confirm(`Clear all ${count} notifications?`)) {
+        window.NotificationManager.notifications = [];
+        window.NotificationManager.saveToLocalStorage();
+        window.NotificationManager.updateUnreadCount();
+        window.NotificationManager.updateNotificationBadge();
+        renderNotifications();
+        updateStats();
+    }
+}
+
+function togglePreferences() {
+    const prefDiv = document.getElementById('notifPreferences');
+    showingPreferences = !showingPreferences;
+
+    prefDiv.style.display = showingPreferences ? 'block' : 'none';
+
+    if (showingPreferences) {
+        prefDiv.style.display = 'block';
+        // Load current preferences
+        if (window.NotificationManager) {
+            document.getElementById('prefEvents').checked = window.NotificationManager.preferences.events;
+            document.getElementById('prefSocial').checked = window.NotificationManager.preferences.social;
+            document.getElementById('prefSystem').checked = window.NotificationManager.preferences.system;
+            document.getElementById('prefUrgent').checked = window.NotificationManager.preferences.urgent;
+            document.getElementById('prefBrowser').checked = window.NotificationManager.preferences.browser;
+        }
+    }
+}
+
+function updatePreference(key, value) {
+    if (window.NotificationManager) {
+        window.NotificationManager.updatePreference(key, value);
+    }
+}
+
+function testNotifications() {
+    if (!window.testNotification) {
+        alert('Test notification functions not available');
+        return;
+    }
+
+    // Show different types of notification for testing
+    window.testNotification.system();
+    setTimeout(() => window.testNotification.event(), 2000);
+    setTimeout(() => window.testNotification.social(), 4000);
+
+    alert('✅ Test notifications sent!\nCheck for notifications in your browser and in the notification center.');
+}
+
+// Utility functions
+function getNotificationIcon(type) {
+    switch (type) {
+        case 'event': return 'calendar-alt';
+        case 'social': return 'users';
+        case 'system': return 'info-circle';
+        case 'urgent': return 'exclamation-triangle';
+        default: return 'bell';
+    }
+}
+
+function formatNotificationTime(timestamp) {
+    const now = Date.now();
+    const diff = now - timestamp;
+    const minutes = Math.floor(diff / 60000);
+    const hours = Math.floor(diff / 3600000);
+    const days = Math.floor(diff / 86400000);
+
+    if (minutes < 1) return 'Just now';
+    if (minutes < 60) return `${minutes}m ago`;
+    if (hours < 24) return `${hours}h ago`;
+    return `${days}d ago`;
+}
+
+function capitalizeFirst(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+// Global notification center functions
+window.showNotificationCenter = showNotificationCenter;
+window.hideNotificationCenter = hideNotificationCenter;
+window.markAllAsRead = markAllAsRead;
+window.clearAllNotifications = clearAllNotifications;
+window.togglePreferences = togglePreferences;
+window.updatePreference = updatePreference;
+window.testNotifications = testNotifications;
+window.handleNotificationAction = handleNotificationAction;
+
+// Initialize on load (auto-hide until needed)
+setTimeout(() => {
+    hideNotificationCenter();
+}, 100);
+
+console.log('🔔 Notification Center initialized');
+
+// Helper: Integrate with existing system
+if (window.NotificationManager) {
+    // Override updateNotificationBadge to also refresh the center
+    const originalUpdateBadge = window.NotificationManager.updateNotificationBadge;
+    window.NotificationManager.updateNotificationBadge = function() {
+        if (originalUpdateBadge) originalUpdateBadge.call(this);
+        if (document.getElementById('notificationCenter').classList.contains('active')) {
+            renderNotifications();
+            updateStats();
+        }
+    };
+}
+</script>

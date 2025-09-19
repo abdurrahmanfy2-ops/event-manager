@@ -1,0 +1,54 @@
+{
+  "name": "Campus Event Manager",
+  "short_name": "CampusEvents",
+  "description": "Complete campus event management system with real-time notifications and PWA capabilities",
+  "start_url": "/campus.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "orientation": "portrait-primary",
+  "categories": ["lifestyle", "productivity", "education"],
+  "icons": [
+    {
+      "src": "https://img.icons8.com/ios-filled/180/2563eb/calendar-500.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://img.icons8.com/ios-filled/192/2563eb/calendar-500.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://img.icons8.com/ios-filled/512/2563eb/calendar-500.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Add New Event",
+      "short_name": "Add Event",
+      "description": "Create a new event quickly",
+      "url": "/campus.html#create-event",
+      "icons": [{ "src": "https://img.icons8.com/ios-filled/96/2563eb/plus-math.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "View Calendar",
+      "short_name": "Calendar",
+      "description": "View all events in calendar format",
+      "url": "/campus.html#calendar",
+      "icons": [{ "src": "https://img.icons8.com/ios-filled/96/2563eb/calendar.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Analytics",
+      "short_name": "Analytics",
+      "description": "View event analytics and reports",
+      "url": "/campus.html#analytics",
+      "icons": [{ "src": "https://img.icons8.com/ios-filled/96/2563eb/combo-chart.png", "sizes": "96x96" }]
+    }
+  ]
+}

@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Club Dashboard - College Event Hub</title>
+    <link rel="stylesheet" href="homepage.css">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .club-dashboard {
+            padding: 2rem 0;
+            background: var(--background-color, #f8fafc);
+        }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .metric-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e1e5e9;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .metric-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .metric-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .metric-label {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .metric-change {
+            color: #10b981;
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+        }
+
+        .chart-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .activities-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .activity-card, .upcoming-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #e1e5e9;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .activity-item:hover {
+            background-color: #f8fafc;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: transform 0.2s ease;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .members-section {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .member-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #e1e5e9;
+        }
+
+        @media (max-width: 768px) {
+            .activities-section {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <i class="fas fa-arrow-left" onclick="window.location.href='index.html'"></i>
+                Back to Home
+            </div>
+            <div class="nav-links">
+                <a href="event-tracker.html">Event Tracker</a>
+                <a href="club-dashboard.html" class="active">Club Dashboard</a>
+                <a href="collaboration.html">Collaboration</a>
+                <a href="registration.html">Registration</a>
+                <a href="gallery.html">Gallery</a>
+                <a href="index.html" class="cta-button">Back to Events</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Header -->
+    <section class="dashboard-header">
+        <div class="container">
+            <h1><i class="fas fa-tachometer-alt"></i> Club Dashboard</h1>
+            <p>Monitor your club's performance, manage events, and engage with members</p>
+        </div>
+    </section>
+
+    <!-- Quick Actions -->
+    <section class="club-dashboard">
+        <div class="container">
+            <div class="quick-actions">
+                <button class="action-btn">
+                    <i class="fas fa-plus"></i>
+                    Create New Event
+                </button>
+                <button class="action-btn">
+                    <i class="fas fa-users"></i>
+                    Invite Members
+                </button>
+                <button class="action-btn">
+                    <i class="fas fa-calendar"></i>
+                    Schedule Meeting
+                </button>
+                <button class="action-btn">
+                    <i class="fas fa-chart-bar"></i>
+                    View Analytics
+                </button>
+            </div>
+
+            <!-- Metrics Grid -->
+            <div class="dashboard-grid">
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <div class="metric-icon" style="background: linear-gradient(135deg, #10b981, #34d399);">
+                            <i class="fas fa-users" style="color: white;"></i>
+                        </div>
+                        <div>
+                            <div class="metric-value" id="totalMembers">247</div>
+                            <div class="metric-label">Total Members</div>
+                        </div>
+                    </div>
+                    <div class="metric-change">+12% this month</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <div class="metric-icon" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                            <i class="fas fa-calendar-check" style="color: white;"></i>
+                        </div>
+                        <div>
+                            <div class="metric-value" id="totalEvents">45</div>
+                            <div class="metric-label">Events Hosted</div>
+                        </div>
+                    </div>
+                    <div class="metric-change">+8% this quarter</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <div class="metric-icon" style="background: linear-gradient(135deg, #f59e0b, #fbbf24);">
+                            <i class="fas fa-user-check" style="color: white;"></i>
+                        </div>
+                        <div>
+                            <div class="metric-value" id="avgAttendance">89</div>
+                            <div class="metric-label">Avg Attendance</div>
+                        </div>
+                    </div>
+                    <div class="metric-change">+15% from last event</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <div class="metric-icon" style="background: linear-gradient(135deg, #ec4899, #f472b6);">
+                            <i class="fas fa-star" style="color: white;"></i>
+                        </div>
+                        <div>
+                            <div class="metric-value" id="avgRating">4.7</div>
+                            <div class="metric-label">Average Rating</div>
+                        </div>
+                    </div>
+                    <div class="metric-change">+0.3 since last month</div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="chart-section">
+                <h2><i class="fas fa-chart-line"></i> Membership Growth & Event Trends</h2>
+                <div class="chart-container">
+                    <canvas id="membershipChart" width="400" height="150"></canvas>
+                </div>
+            </div>
+
+            <!-- Activity Sections -->
+            <div class="activities-section">
+                <div class="activity-card">
+                    <h3><i class="fas fa-activity"></i> Recent Activity</h3>
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <div class="activity-icon" style="background: #10b981;">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                            <div>
+                                <strong>John Doe</strong> joined the club
+                                <div style="font-size: 0.8rem; color: #64748b;">2 hours ago</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon" style="background: #667eea;">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <div>
+                                <strong>Music Fest 2025</strong> event created
+                                <div style="font-size: 0.8rem; color: #64748b;">1 day ago</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon" style="background: #f59e0b;">
+                                <i class="fas fa-comments"></i>
+                            </div>
+                            <div>
+                                <strong>Meeting Discussion</strong> thread started
+                                <div style="font-size: 0.8rem; color: #64748b;">2 days ago</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon" style="background: #ec4899;">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <div>
+                                Club achieved <strong>"10 Events" milestone</strong>
+                                <div style="font-size: 0.8rem; color: #64748b;">1 week ago</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="upcoming-card">
+                    <h3><i class="fas fa-clock"></i> Upcoming Events</h3>
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <div class="activity-icon" style="background: #667eea;">
+                                <i class="fas fa-music"></i>
+                            </div>
+                            <div>
+                                <strong>Spring Music Fest</strong>
+                                <div>March 28, 2025 at 2:00 PM</div>
+                                <div style="font-size: 0.8rem; color: #64748b;">Main Hall - 247 attending</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon" style="background: #10b981;">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <div>
+                                <strong>Tech Workshop</strong>
+                                <div>April 2, 2025 at 10:00 AM</div>
+                                <div style="font-size: 0.8rem; color: #64748b;">Lab Room 101 - 45 registered</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon" style="background: #f59e0b;">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div>
+                                <strong>Club Meeting</strong>
+                                <div>April 5, 2025 at 6:00 PM</div>
+                                <div style="font-size: 0.8rem; color: #64748b;">Student Center - All members</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Members -->
+            <div class="members-section">
+                <h3><i class="fas fa-users"></i> Recent Members</h3>
+                <div class="members-list">
+                    <div class="member-item">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50&h=50&fit=crop&crop=face" alt="Sarah Johnson" style="border-radius: 50%; margin-right: 1rem;">
+                        <div>
+                            <strong>Sarah Johnson</strong>
+                            <div style="color: #64748b; font-size: 0.9rem;">Piano Player & Music Composer</div>
+                        </div>
+                        <div style="margin-left: auto; color: #10b981; font-size: 0.8rem;">Joined 2 days ago</div>
+                    </div>
+                    <div class="member-item">
+                        <img src="https://images.unsplash.com/photo-1494790108755-2616b50ad229?w=50&h=50&fit=crop&crop=face" alt="Mike Chen" style="border-radius: 50%; margin-right: 1rem;">
+                        <div>
+                            <strong>Mike Chen</strong>
+                            <div style="color: #64748b; font-size: 0.9rem;">Guitar Enthusiast & Tech Student</div>
+                        </div>
+                        <div style="margin-left: auto; color: #10b981; font-size: 0.8rem;">Joined 1 week ago</div>
+                    </div>
+                    <div class="member-item">
+                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=50&h=50&fit=crop&crop=face" alt="Emma Davis" style="border-radius: 50%; margin-right: 1rem;">
+                        <div>
+                            <strong>Emma Davis</strong>
+                            <div style="color: #64748b; font-size: 0.9rem;">Vocal Coach & Event Organizer</div>
+                        </div>
+                        <div style="margin-left: auto; color: #10b981; font-size: 0.8rem;">Joined 3 weeks ago</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+        <script src="api-integration.js"></script>
+    <script>
+        let currentChart = null;
+
+        // Load Dashboard Data on Page Load
+        async function loadDashboardData() {
+            try {
+                console.log('📊 Loading dashboard data...');
+
+                // Get dashboard stats
+                const stats = await window.EventAPI.analytics.getDashboardStats();
+                console.log('📈 Dashboard stats:', stats);
+
+                // Update statistics cards
+                updateStatsCards(stats);
+
+                // Get event analytics for chart
+                const eventAnalytics = await window.EventAPI.analytics.getEventAnalytics('quarter');
+                console.log('📊 Event analytics:', eventAnalytics);
+
+                // Update chart with real data
+                updateChart(eventAnalytics);
+
+                // Get recent notifications
+                const notifications = await window.EventAPI.notifications.getNotifications();
+                console.log('🔔 Notifications:', notifications);
+
+            } catch (error) {
+                console.error('Error loading dashboard data:', error);
+                // Fall back to mock data if API fails
+                loadMockData();
+            }
+        }
+
+        function updateStatsCards(stats) {
+            if (!stats) return;
+
+            // Update member count
+            const totalMembersEl = document.getElementById('totalMembers');
+            const totalEventsEl = document.getElementById('totalEvents');
+            const avgAttendanceEl = document.getElementById('avgAttendance');
+
+            if (totalMembersEl) totalMembersEl.textContent = stats.totalEvents || '247'; // Mock fallback
+            if (totalEventsEl) totalEventsEl.textContent = stats.totalEvents || '45';
+            if (avgAttendanceEl) avgAttendanceEl.textContent = stats.averageRating || '89';
+        }
+
+        function updateChart(analytics) {
+            const ctx = document.getElementById('membershipChart');
+            if (!ctx) return;
+
+            const context = ctx.getContext('2d');
+
+            // Data from API or fallback
+            const chartData = analytics?.attendance_trend || [5, 8, 12, 15, 20, 25, 30];
+            const labels = ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Week 7'];
+
+            // Destroy existing chart if it exists
+            if (currentChart) {
+                currentChart.destroy();
+            }
+
+            currentChart = new Chart(context, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Attendance',
+                        data: chartData,
+                        borderColor: '#667eea',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Weekly Attendance Trend'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        function loadMockData() {
+            console.log('⚠️ Using mock data (API unavailable)');
+
+            const ctx = document.getElementById('membershipChart');
+            if (!ctx) return;
+
+            const context = ctx.getContext('2d');
+
+            if (currentChart) {
+                currentChart.destroy();
+            }
+
+            currentChart = new Chart(context, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+                    datasets: [{
+                        label: 'Members',
+                        data: [120, 135, 148, 165, 178, 195, 210, 230, 247],
+                        borderColor: '#667eea',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Club Membership Growth Over Time'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize dashboard when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🏢 Club Dashboard loading...');
+            loadDashboardData();
+
+            // Set up navigation
+            const goBackBtn = document.querySelector('button[onclick="window.location.href=\'index.html\'"]') ||
+                            document.querySelector('.back-to-home');
+            if (goBackBtn) {
+                goBackBtn.addEventListener('click', function() {
+                    window.location.href = 'index.html';
+                });
+            }
+        });
+
+        // Quick Action Button Handlers
+        async function createNewEvent() {
+            try {
+                // Navigate to main events page and show the event creation form
+                window.location.href = 'index.html#events';
+            } catch (error) {
+                console.error('Error navigating to event creation:', error);
+                window.EventAPI.utils.showError('Failed to open event creation form', 'actionFeedback');
+            }
+        }
+
+        async function inviteMembers() {
+            const email = prompt('Enter member email to invite:');
+            if (email && window.EventAPI.validation.isValidEmail(email)) {
+                try {
+                    // Could call a real member invitation API here
+                    window.EventAPI.utils.showSuccess(`Invitation sent to ${email}`, 'actionFeedback');
+                } catch (error) {
+                    window.EventAPI.utils.showError('Failed to send invitation', 'actionFeedback');
+                }
+            }
+        }
+
+        async function scheduleMeeting() {
+            const meetingDate = prompt('Enter meeting date (YYYY-MM-DD):');
+            if (meetingDate) {
+                const testEvent = {
+                    title: `Club Meeting - ${meetingDate}`,
+                    date: meetingDate,
+                    time: '18:00',
+                    location: 'Student Center',
+                    category: 'social',
+                    description: 'Regular club meeting to discuss upcoming events.'
+                };
+
+                try {
+                    const result = await window.EventAPI.events.createEvent(testEvent);
+                    window.EventAPI.utils.showSuccess('Meeting scheduled successfully!', 'actionFeedback');
+                    loadDashboardData(); // Refresh data
+                } catch (error) {
+                    window.EventAPI.utils.showError('Failed to schedule meeting', 'actionFeedback');
+                }
+            }
+        }
+
+        function viewAnalytics() {
+            // Scroll to chart section
+            document.getElementById('membershipChart')?.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Attach button event handlers
+        setTimeout(() => {
+            const createBtn = document.querySelector('.action-btn');
+            const inviteBtn = document.querySelectorAll('.action-btn')[1];
+            const meetingBtn = document.querySelectorAll('.action-btn')[2];
+            const analyticsBtn = document.querySelectorAll('.action-btn')[3];
+
+            if (createBtn) createBtn.addEventListener('click', createNewEvent);
+            if (inviteBtn) inviteBtn.addEventListener('click', inviteMembers);
+            if (meetingBtn) meetingBtn.addEventListener('click', scheduleMeeting);
+            if (analyticsBtn) analyticsBtn.addEventListener('click', viewAnalytics);
+        }, 100);
+
+        // Navigation functionality
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html></content>

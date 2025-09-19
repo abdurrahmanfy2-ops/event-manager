@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth System Test - College Event Hub</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .test-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .test-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+        }
+        
+        .test-button {
+            padding: 0.8rem 1.5rem;
+            margin: 0.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary { background: #667eea; color: white; }
+        .btn-secondary { background: #e2e8f0; color: #4a5568; }
+        .btn-success { background: #48bb78; color: white; }
+        .btn-danger { background: #f56565; color: white; }
+        
+        .test-button:hover { transform: translateY(-2px); }
+        
+        .status-display {
+            margin: 1rem 0;
+            padding: 1rem;
+            background: #f7fafc;
+            border-radius: 8px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1><i class="fas fa-tools"></i> Authentication System Test</h1>
+        <p>Test the login, logout, and persistent session functionality.</p>
+
+        <!-- Navigation Test -->
+        <div class="test-section">
+            <h3><i class="fas fa-compass"></i> Navigation Integration</h3>
+            <p>Test navigation behavior with authentication states.</p>
+            
+            <div id="nav-include-placeholder">
+                <!-- Navigation will be loaded here -->
+            </div>
+            
+            <button class="test-button btn-secondary" onclick="loadNavigation()">
+                <i class="fas fa-download"></i> Load Navigation
+            </button>
+            
+            <button class="test-button btn-secondary" onclick="refreshNav()">
+                <i class="fas fa-sync"></i> Refresh Nav State
+            </button>
+        </div>
+
+        <!-- Auth Status Test -->
+        <div class="test-section">
+            <h3><i class="fas fa-id-badge"></i> Authentication Status</h3>
+            <div class="status-display" id="auth-status">Loading...</div>
+            
+            <div>
+                <button class="test-button btn-primary" onclick="testLogin()">
+                    <i class="fas fa-sign-in-alt"></i> Quick Login Test
+                </button>
+                
+                <button class="test-button btn-danger" onclick="testLogout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout Test
+                </button>
+                
+                <button class="test-button btn-secondary" onclick="checkPersistence()">
+                    <i class="fas fa-memory"></i> Check Persistence
+                </button>
+            </div>
+        </div>
+
+        <!-- API Tests -->
+        <div class="test-section">
+            <h3><i class="fas fa-plug"></i> API Integration Tests</h3>
+            <div class="status-display" id="api-status">Waiting for authentication...</div>
+            
+            <div>
+                <button class="test-button btn-success" onclick="testEventsAPI()">
+                    <i class="fas fa-calendar"></i> Test Events API
+                </button>
+                
+                <button class="test-button btn-success" onclick="testDashboardAPI()">
+                    <i class="fas fa-chart-line"></i> Test Dashboard API
+                </button>
+                
+                <button class="test-button btn-success" onclick="testProfileAPI()">
+                    <i class="fas fa-user"></i> Test Profile API
+                </button>
+            </div>
+        </div>
+
+        <!-- Sample Data -->
+        <div class="test-section">
+            <h3><i class="fas fa-database"></i> Sample Login Credentials</h3>
+            <div class="status-display">
+                <strong>Test Users:</strong><br>
+                john@university.edu : password123 (Organizer)<br>
+                sarah@university.edu : password123 (Student)<br>
+                mike@university.edu : password123 (Student)<br>
+                emma@university.edu : password123 (Faculty)
+            </div>
+            
+            <p>Use these credentials to test the full authentication flow.</p>
+        </div>
+
+        <!-- Integration Tests -->
+        <div class="test-section">
+            <h3><i class="fas fa-code-merge"></i> Page Integration Tests</h3>
+            <p>Test how other pages behave with authentication.</p>
+            
+            <div>
+                <a href="club-dashboard.html" class="test-button btn-primary">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                
+                <a href="event-tracker.html" class="test-button btn-primary">
+                    <i class="fas fa-search"></i> Event Tracker
+                </a>
+                
+                <a href="gallery.html" class="test-button btn-primary">
+                    <i class="fas fa-images"></i> Gallery
+                </a>
+                
+                <a href="registration.html" class="test-button btn-primary">
+                    <i class="fas fa-ticket-alt"></i> Registration
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="auth-utils.js"></script>
+    <script>
+        let navLoaded = false;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateAuthStatus();
+            document.addEventListener('authStateChanged', updateAuthStatus);
+        });
+
+        function loadNavigation() {
+            if (navLoaded) return;
+            
+            fetch('navigation.html')
+                .then(response => response.text())
+                .then(html => {
+                    const placeholder = document.getElementById('nav-include-placeholder');
+                    placeholder.innerHTML = html;
+                    
+                    // Execute any scripts in the navigation
+                    const scripts = placeholder.querySelectorAll('script');
+                    scripts.forEach(script => {
+                        const newScript = document.createElement('script');
+                        if (script.src) {
+                            newScript.src = script.src;
+                        } else {
+                            newScript.textContent = script.textContent;
+                        }
+                        document.body.appendChild(newScript);
+                    });
+                    
+                    navLoaded = true;
+                    alert('✅ Navigation loaded successfully!');
+                })
+                .catch(error => {
+                    console.error('Failed to load navigation:', error);
+                    alert('❌ Failed to load navigation');
+                });
+        }
+
+        function refreshNav() {
+            if (!navLoaded) {
+                alert('❌ Please load navigation first');
+                return;
+            }
+            
+            // Force refresh of auth state in navigation
+            updateAuthStatus();
+            alert('✅ Navigation refreshed!');
+        }
+
+        function updateAuthStatus() {
+            const statusDiv = document.getElementById('auth-status');
+            const apiStatusDiv = document.getElementById('api-status');
+            
+            if (!window.AuthManager) {
+                statusDiv.innerHTML = '🔄 Authentication system not loaded';
+                return;
+            }
+            
+            const user = window.AuthManager.getCurrentUser();
+            const isAuthenticated = window.AuthManager.isAuthenticated();
+            
+            if (isAuthenticated && user) {
+                statusDiv.innerHTML = `
+                    ✅ <strong>Authenticated:</strong> ${user.name}<br>
+                    📧 <strong>Email:</strong> ${user.email}<br>
+                    👥 <strong>Role:</strong> ${user.role}<br>
+                    🔑 <strong>Token:</strong> ${window.AuthManager.getAuthToken() ? 'Present' : 'Missing'}<br>
+                    🗄️ <strong>Storage:</strong> ${localStorage.getItem('authToken') ? 'Local' : 'Session'}
+                `;
+                apiStatusDiv.innerHTML = '🔓 Ready to test authenticated APIs';
+            } else {
+                statusDiv.innerHTML = `
+                    ❌ <strong>Not authenticated</strong><br>
+                    🔑 <strong>Token:</strong> None<br>
+                    👤 <strong>User:</strong> None
+                `;
+                apiStatusDiv.innerHTML = '🔒 Please authenticate to test APIs';
+            }
+        }
+
+        async function testLogin() {
+            const response = await fetch('http://localhost:8001/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: 'john@university.edu',
+                    password: 'password123'
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (response.ok && data.access_token) {
+                // Manually set auth (in production, redirect to login page)
+                window.AuthManager.setAuth(data.access_token, data.user, true);
+                alert('✅ Login successful! Redirecting...');
+                setTimeout(() => window.location.reload(), 1000);
+            } else {
+                alert('❌ Login failed: ' + (data.detail || 'Unknown error'));
+            }
+        }
+
+        function testLogout() {
+            if (!window.AuthManager.isAuthenticated()) {
+                alert('❌ Not authenticated');
+                return;
+            }
+            
+            window.AuthManager.logout();
+            alert('✅ Logged out! Refreshing...');
+            setTimeout(() => window.location.reload(), 1000);
+        }
+
+        function checkPersistence() {
+            const localToken = localStorage.getItem('authToken');
+            const sessionToken = sessionStorage.getItem('authToken');
+            
+            alert(`🔍 Persistence Check:
+Local Token: ${localToken ? 'Present' : 'None'}
+Session Token: ${sessionToken ? 'Present' : 'None'}
+Current Auth: ${window.AuthManager ? (window.AuthManager.isAuthenticated() ? 'Yes' : 'No') : 'Unknown'}`);
+        }
+
+        async function testEventsAPI() {
+            if (!window.AuthManager || !window.AuthManager.isAuthenticated()) {
+                alert('❌ Please authenticate first');
+                return;
+            }
+            
+            const statusDiv = document.getElementById('api-status');
+            statusDiv.innerHTML = '🔄 Testing Events API...';
+            
+            try {
+                const response = await fetch('http://localhost:8001/events/');
+                const data = await response.json();
+                
+                if (response.ok) {
+                    statusDiv.innerHTML = `✅ Events API Success:
+${data.length} events loaded successfully
+First event: ${data[0]?.title || 'N/A'}`;
+                } else {
+                    statusDiv.innerHTML = `❌ Events API Failed:
+Status: ${response.status}
+Error: ${JSON.stringify(data)}`;
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `❌ Events API Error: ${error.message}`;
+            }
+        }
+
+        async function testDashboardAPI() {
+            if (!window.AuthManager || !window.AuthManager.isAuthenticated()) {
+                alert('❌ Please authenticate first');
+                return;
+            }
+            
+            const statusDiv = document.getElementById('api-status');
+            statusDiv.innerHTML = '🔄 Testing Dashboard API...';
+            
+            try {
+                const response = await fetch('http://localhost:8001/dashboard');
+                const data = await response.json();
+                
+                if (response.ok) {
+                    statusDiv.innerHTML = `✅ Dashboard API Success:
+Total Events: ${data.totalEvents}
+Upcoming: ${data.upcomingEvents}
+Rating: ${data.averageRating}`;
+                } else {
+                    statusDiv.innerHTML = `❌ Dashboard API Failed:
+Status: ${response.status}
+Error: ${JSON.stringify(data)}`;
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `❌ Dashboard API Error: ${error.message}`;
+            }
+        }
+
+        async function testProfileAPI() {
+            if (!window.AuthManager || !window.AuthManager.isAuthenticated()) {
+                alert('❌ Please authenticate first');
+                return;
+            }
+            
+            const statusDiv = document.getElementById('api-status');
+            statusDiv.innerHTML = '🔄 Testing Profile API...';
+            
+            try {
+                const response = await fetch('http://localhost:8001/profile');
+                const data = await response.json();
+                
+                if (response.ok) {
+                    statusDiv.innerHTML = `✅ Profile API Success:
+Name: ${data.name}
+Email: ${data.email}
+Role: ${data.role}
+Points: ${data.points}`;
+                } else {
+                    statusDiv.innerHTML = `❌ Profile API Failed:
+Status: ${response.status}
+Error: ${JSON.stringify(data)}`;
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `❌ Profile API Error: ${error.message}`;
+            }
+        }
+
+        // Debug helpers
+        window.testAuth = {
+            login: testLogin,
+            logout: testLogout,
+            check: checkPersistence
+        };
+
+        console.log('🧪 Auth test page loaded');
+        console.log('💡 Use window.testAuth to access test functions');
+    </script>
+</body>
+</html>

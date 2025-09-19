@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Event Hub - Empowering Student Events & Clubs</title>
+    <link rel="stylesheet" href="homepage.css">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Navigation Header -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" style="cursor: pointer;">College Event Hub</div>
+            <div class="nav-links">
+                <a href="club-dashboard.html">Clubs</a>
+                <a href="#enterprise-demo">Colleges</a>
+                <a href="#trust-badges">Partners</a>
+                <div class="search-container">
+                    <form class="nav-search-form" onsubmit="handleSearch(event)">
+                        <input type="text" id="navSearch" class="nav-search-input" placeholder="Search events..." aria-label="Search events">
+                        <button type="submit" class="nav-search-btn" aria-label="Submit search">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
+                </div>
+                <a href="login.html" class="cta-button" aria-label="Login to event manager">Login</a>
+                <button class="theme-toggle" aria-label="Toggle dark mode">
+                    <i class="fas fa-sun"></i>
+                </button>
+            </div>
+            <div class="mobile-menu-toggle" aria-label="Open navigation menu">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-overlay"></div>
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Empowering Student Events & Clubs</h1>
+                <p class="hero-subtitle">Transform your campus community with intelligent event management and seamless collaboration tools.</p>
+                <button class="cta-button-large" onclick="window.location.href='login.html'">Get Started</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title">Everything You Need to Manage Events</h2>
+            <p class="section-subtitle">Powerful tools designed specifically for student organizations and campus communities.</p>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h3><a href="event-tracker.html" style="color: inherit; text-decoration: none;">Event Tracker</a></h3>
+                    <p>Track attendance, manage RSVPs, and get real-time insights into event engagement and participation.</p>
+                    <a href="event-tracker.html" class="cta-button-large" style="margin-top: 15px; display: inline-block; padding: 8px 16px; background: #667eea; color: white; text-decoration: none; border-radius: 6px;">View Tracker</a>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <h3><a href="club-dashboard.html" style="color: inherit; text-decoration: none;">Club Dashboard</a></h3>
+                    <p>Comprehensive analytics and monitoring for club activities, membership growth, and event planning.</p>
+                    <a href="club-dashboard.html" class="cta-button-large" style="margin-top: 15px; display: inline-block; padding: 8px 16px; background: #10b981; color: white; text-decoration: none; border-radius: 6px;">View Dashboard</a>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3><a href="collaboration.html" style="color: inherit; text-decoration: none;">Collaboration Board</a></h3>
+                    <p>Connect with other clubs and organizations for joint events, shared resources, and cross-campus initiatives.</p>
+                    <a href="collaboration.html" class="cta-button-large" style="margin-top: 15px; display: inline-block; padding: 8px 16px; background: #f59e0b; color: white; text-decoration: none; border-radius: 6px;">Start Collaborating</a>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-ticket-alt"></i>
+                    </div>
+                    <h3><a href="registration.html" style="color: inherit; text-decoration: none;">Registration & Ticketing</a></h3>
+                    <p>Streamlined online registration with integrated ticketing system for seamless event management.</p>
+                    <a href="registration.html" class="cta-button-large" style="margin-top: 15px; display: inline-block; padding: 8px 16px; background: #ec4899; color: white; text-decoration: none; border-radius: 6px;">Register Now</a>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <h3><a href="gallery.html" style="color: inherit; text-decoration: none;">Gallery & Highlights</a></h3>
+                    <p>Showcase memorable moments with automated photo galleries and highlight reels from your events.</p>
+                    <a href="gallery.html" class="cta-button-large" style="margin-top: 15px; display: inline-block; padding: 8px 16px; background: #8b5cf6; color: white; text-decoration: none; border-radius: 6px;">View Gallery</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Upcoming Events Section -->
+    <section class="upcoming-events">
+        <div class="container">
+            <h2 class="section-title">Upcoming Events</h2>
+            <div class="events-container">
+                <!-- Mini Calendar Widget -->
+                <div class="calendar-widget">
+                    <div class="calendar-header">
+                        <h4>March 2025</h4>
+                    </div>
+                    <div class="calendar-grid">
+                        <div class="day-label">Mon</div>
+                        <div class="day-label">Tue</div>
+                        <div class="day-label">Wed</div>
+                        <div class="day-label">Thu</div>
+                        <div class="day-label">Fri</div>
+                        <div class="day-label">Sat</div>
+                        <div class="day-label">Sun</div>
+
+                        <div class="day">25</div>
+                        <div class="day">26</div>
+                        <div class="day">27</div>
+                        <div class="day event-day">28</div>
+                        <div class="day">29</div>
+                        <div class="day event-day">30</div>
+                        <div class="day">31</div>
+
+                        <div class="day">1</div>
+                        <div class="day event-day">2</div>
+                        <div class="day">3</div>
+                        <div class="day">4</div>
+                        <div class="day">5</div>
+                        <div class="day">6</div>
+                        <div class="day">7</div>
+                    </div>
+                </div>
+
+                <!-- Event Cards -->
+                <div class="events-list">
+                    <div class="event-card">
+                        <div class="event-image">
+                            <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400" alt="Spring Music Fest">
+                        </div>
+                        <div class="event-content">
+                            <h4>Spring Music Fest</h4>
+                            <p class="event-date">March 28, 2025</p>
+                            <p class="event-description">Annual celebration featuring local bands, food trucks, and campus talent.</p>
+                        </div>
+                    </div>
+
+                    <div class="event-card">
+                        <div class="event-image">
+                            <img src="https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=400" alt="Innovation Expo">
+                        </div>
+                        <div class="event-content">
+                            <h4>Innovation Expo</h4>
+                            <p class="event-date">March 30, 2025</p>
+                            <p class="event-description">Showcase groundbreaking student projects and research initiatives.</p>
+                        </div>
+                    </div>
+
+                    <div class="event-card">
+                        <div class="event-image">
+                            <img src="https://images.unsplash.com/photo-1543353071-873f17a7a088?w=400" alt="Community Bake Sale">
+                        </div>
+                        <div class="event-content">
+                            <h4>Community Bake Sale</h4>
+                            <p class="event-date">April 2, 2025</p>
+                            <p class="event-description">Raising funds for local charities with homemade treats and community spirit.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Enterprise Demo Section -->
+    <section id="enterprise-demo" class="enterprise-demo">
+        <div class="container">
+            <div class="demo-content">
+                <div class="demo-text">
+                    <h2>Ready to Transform Campus Events?</h2>
+                    <p>See College Event Hub in action with a personalized demo tailored to your university's needs. Our experts will show you how we can:</p>
+                    <ul>
+                        <li><i class="fas fa-check"></i> Streamline event planning for 500+ clubs</li>
+                        <li><i class="fas fa-check"></i> Reduce administrative time by 65%</li>
+                        <li><i class="fas fa-check"></i> Increase student engagement by 300%</li>
+                        <li><i class="fas fa-check"></i> Ensure compliance with FERPA & GDPR</li>
+                    </ul>
+                </div>
+                <div class="demo-form">
+                    <form class="contact-form" aria-label="Demo request form">
+                        <h3>Schedule Your Free Demo</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="demo-name">Full Name *</label>
+                                <input type="text" id="demo-name" required aria-label="Your full name">
+                            </div>
+                            <div class="form-group">
+                                <label for="demo-email">Work Email *</label>
+                                <input type="email" id="demo-email" required aria-label="Your work email">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="demo-university">University/Organization *</label>
+                                <input type="text" id="demo-university" required aria-label="University or organization name">
+                            </div>
+                            <div class="form-group">
+                                <label for="demo-role">Your Role</label>
+                                <select id="demo-role" aria-label="Your role at the organization">
+                                    <option value="">Select your role</option>
+                                    <option value="admin">IT/Admin</option>
+                                    <option value="student_affairs">Student Affairs</option>
+                                    <option value="event_planner">Event Planner</option>
+                                    <option value="faculty">Faculty</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="demo-size">Organization Size</label>
+                            <select id="demo-size" aria-label="Organization size">
+                                <option value="">Select size</option>
+                                <option value="small">Under 5,000 students</option>
+                                <option value="medium">5,000-15,000 students</option>
+                                <option value="large">Over 15,000 students</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="demo-message">Any specific requirements?</label>
+                            <textarea id="demo-message" rows="3" placeholder="Tell us about your current challenges or what you'd like to see in the demo..." aria-label="Specific requirements or message"></textarea>
+                        </div>
+                        <button type="submit" class="cta-button-large demo-submit" id="demo-submit">
+                            <span class="btn-text">Request Free Demo</span>
+                            <span class="loading-text" style="display: none;">Sending Request...</span>
+                        </button>
+                        <p class="form-footer">We typically respond within 24 hours. No sales pitch, just value.</p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing">
+        <div class="container">
+            <h2 class="section-title">Choose Your Plan</h2>
+            <p class="section-subtitle">Flexible pricing designed for students, clubs, and universities of all sizes.</p>
+
+            <div class="pricing-toggle">
+                <span class="toggle-label">Monthly</span>
+                <label class="switch">
+                    <input type="checkbox" id="billing-toggle">
+                    <span class="slider round"></span>
+                </label>
+                <span class="toggle-label">Yearly</span>
+                <span class="savings-badge">Save 20%</span>
+            </div>
+
+            <div class="pricing-grid">
+                <div class="pricing-card popular">
+                    <div class="popular-badge">Most Popular</div>
+                    <div class="plan-header">
+                        <h3>Starter</h3>
+                        <div class="price">
+                            <span class="currency">$</span>
+                            <span class="amount" data-monthly="9.99" data-yearly="7.99">9.99</span>
+                            <span class="period">/month</span>
+                        </div>
+                        <p>Perfect for student clubs and small organizations</p>
+                    </div>
+                    <ul class="features">
+                        <li><i class="fas fa-check"></i> Up to 500 events per year</li>
+                        <li><i class="fas fa-check"></i> 10 team members</li>
+                        <li><i class="fas fa-check"></i> Basic analytics dashboard</li>
+                        <li><i class="fas fa-check"></i> Email notifications</li>
+                        <li><i class="fas fa-check"></i> Mobile app access</li>
+                        <li><i class="fas fa-times"></i> Custom branding</li>
+                        <li><i class="fas fa-times"></i> Advanced integrations</li>
+                    </ul>
+                    <button class="pricing-btn">Start Free Trial</button>
+                </div>
+
+                <div class="pricing-card featured">
+                    <div class="featured-badge">Best Value</div>
+                    <div class="plan-header">
+                        <h3>Professional</h3>
+                        <div class="price">
+                            <span class="currency">$</span>
+                            <span class="amount" data-monthly="29.99" data-yearly="23.99">29.99</span>
+                            <span class="period">/month</span>
+                        </div>
+                        <p>Everything you need for growing universities</p>
+                    </div>
+                    <ul class="features">
+                        <li><i class="fas fa-check"></i> Unlimited events</li>
+                        <li><i class="fas fa-check"></i> 50 team members</li>
+                        <li><i class="fas fa-check"></i> Advanced analytics & reports</li>
+                        <li><i class="fas fa-check"></i> Custom branding & themes</li>
+                        <li><i class="fas fa-check"></i> API access & integrations</li>
+                        <li><i class="fas fa-check"></i> Priority support</li>
+                        <li><i class="fas fa-times"></i> White-label solution</li>
+                    </ul>
+                    <button class="pricing-btn featured-btn">Start Free Trial</button>
+                </div>
+
+                <div class="pricing-card">
+                    <div class="plan-header">
+                        <h3>Enterprise</h3>
+                        <div class="price">
+                            <span class="contact-text">Contact Us</span>
+                            <p style="margin: 0; font-size: 0.875rem; color: var(--gray-700);">Custom pricing</p>
+                        </div>
+                        <p>For large universities and institutions</p>
+                    </div>
+                    <ul class="features">
+                        <li><i class="fas fa-check"></i> Everything in Professional</li>
+                        <li><i class="fas fa-check"></i> Unlimited users & storage</li>
+                        <li><i class="fas fa-check"></i> White-label solution</li>
+                        <li><i class="fas fa-check"></i> Dedicated account manager</li>
+                        <li><i class="fas fa-check"></i> Custom integrations</li>
+                        <li><i class="fas fa-check"></i> 24/7 phone support</li>
+                        <li><i class="fas fa-check"></i> On-premise deployment</li>
+                    </ul>
+                    <button class="pricing-btn enterprise-btn">Contact Sales</button>
+                </div>
+            </div>
+
+            <div class="pricing-calculator">
+                <h3>Calculate Your Savings</h3>
+                <div class="calculator">
+                    <div class="calc-inputs">
+                        <label>
+                            Number of Events per Year:
+                            <input type="range" id="events-slider" min="100" max="5000" value="1000">
+                            <span id="events-count">1,000</span>
+                        </label>
+                        <label>
+                            Team Size:
+                            <input type="range" id="team-slider" min="5" max="100" value="25">
+                            <span id="team-count">25</span>
+                        </label>
+                        <label>
+                            Plan Duration:
+                            <select id="plan-select">
+                                <option value="starter">Starter</option>
+                                <option value="professional" selected>Professional</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="calc-results">
+                        <div class="result-item">
+                            <span class="result-label">Monthly Cost:</span>
+                            <span class="result-value">$<span id="monthly-cost">29.99</span></span>
+                        </div>
+                        <div class="result-item featured-result">
+                            <span class="result-label">Yearly Savings:</span>
+                            <span class="result-value">$<span id="yearly-savings">79.68</span></span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">Per Event Cost:</span>
+                            <span class="result-value">$<span id="per-event-cost">0.36</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="statistics">
+        <div class="container">
+            <h2 class="section-title">Impact That Matters</h2>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="chart-container">
+                        <canvas id="engagementChart" width="180" height="180"></canvas>
+                    </div>
+                    <h4>Engagement Rate</h4>
+                    <p class="stat-number" data-target="87">87%</p>
+                    <p>Increased student participation in campus events</p>
+                </div>
+
+                <div class="stat-card">
+                    <div class="chart-container">
+                        <canvas id="attendanceChart" width="180" height="180"></canvas>
+                    </div>
+                    <h4>Event Attendance Trend</h4>
+                    <p class="stat-number" data-target="45">+45%</p>
+                    <p>Growth in event attendance year over year</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="container">
+            <h2 class="section-title">What Students Are Saying</h2>
+
+            <div class="testimonials-grid">
+                <div class="testimonial">
+                    <div class="testimonial-image">
+                        <img src="https://images.unsplash.com/photo-1494790108755-2616b50ad229?w=100" alt="Student 1">
+                    </div>
+                    <div class="testimonial-content">
+                        <blockquote>"Our club grew 50% since using College Event Hub. The engagement features made everything so much easier."</blockquote>
+                        <cite>- Sarah Johnson, Music Club President</cite>
+                    </div>
+                </div>
+
+                <div class="testimonial">
+                    <div class="testimonial-image">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100" alt="Student 2">
+                    </div>
+                    <div class="testimonial-content">
+                        <blockquote>"So easy to manage everything! The dashboard gives us insights we never had before."</blockquote>
+                        <cite>- Mike Chen, Engineering Society VP</cite>
+                    </div>
+                </div>
+
+                <div class="testimonial">
+                    <div class="testimonial-image">
+                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100" alt="Student 3">
+                    </div>
+                    <div class="testimonial-content">
+                        <blockquote>"So easy to track events and collaborate with other clubs. This platform changed how we work together."</blockquote>
+                        <cite>- Emma Davis, Environmental Club Coordinator</cite>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust & Security Section -->
+    <section id="trust-badges" class="trust-badges">
+        <div class="container">
+            <div class="trust-container">
+                <div class="trust-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <div class="trust-text">
+                        <h4>GDPR Compliant</h4>
+                        <p>Your data is protected under EU privacy regulations</p>
+                    </div>
+                </div>
+                <div class="trust-item">
+                    <i class="fas fa-lock"></i>
+                    <div class="trust-text">
+                        <h4>256-bit SSL Encrypted</h4>
+                        <p>Bank-level security for all your information</p>
+                    </div>
+                </div>
+                <div class="trust-item">
+                    <i class="fas fa-clock"></i>
+                    <div class="trust-text">
+                        <h4>99.9% Uptime</h4>
+                        <p>Reliable service you can depend on</p>
+                    </div>
+                </div>
+                <div class="trust-item">
+                    <i class="fas fa-user-check"></i>
+                    <div class="trust-text">
+                        <h4>SOC 2 Certified</h4>
+                        <p>Independent security and compliance audit</p>
+                    </div>
+                </div>
+                <div class="live-counter">
+                    <div class="counter-content">
+                        <div class="counter-number">
+                            <span id="live-users">1,247</span>
+                        </div>
+                        <div class="counter-label">Students using platform right now</div>
+                        <div class="counter-indicator">
+                            <span class="dot"></span>
+                            <span>Live</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+
+            <div class="faq-container">
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>How much does College Event Hub cost?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>We offer flexible pricing plans starting at $9.99/month for basic clubs, with premium features available for growing organizations. Contact us for custom enterprise solutions.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>Is my data secure and private?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Absolutely. We use enterprise-grade encryption, comply with GDPR and FERPA regulations, and never share your data with third parties.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>Can different clubs collaborate on events?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes! Our Collaboration Board allows different clubs to join forces, share resources, and co-organize events seamlessly.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                        <span>How long does it take to set up?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Most clubs are up and running within 15 minutes. We also offer personalized setup assistance and training sessions.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter">
+        <div class="container">
+            <div class="newsletter-content">
+                <div class="newsletter-text">
+                    <h2>Stay in the Loop</h2>
+                    <p>Get the latest event management tips, platform updates, and exclusive offers delivered to your inbox.</p>
+                </div>
+
+                <div class="newsletter-form">
+                    <form class="signup-form" aria-label="Newsletter signup form">
+                        <div class="form-group">
+                            <input type="email" id="newsletter-email" placeholder="Enter your email address" required aria-label="Email address">
+                        </div>
+                        <button type="submit" class="cta-button newsletter-submit">
+                            <span class="btn-text">Subscribe</span>
+                            <span class="loading-text" style="display: none;">Subscribing...</span>
+                        </button>
+                    </form>
+                    <p class="privacy-note">We respect your privacy. Unsubscribe at any time.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Login Section -->
+    <section id="login-section" class="login-section">
+        <div class="container">
+            <div class="login-content">
+                <div class="login-intro">
+                    <h2>Join Campus Event Hub</h2>
+                    <p>Access exclusive features, create amazing events, and connect with your campus community.</p>
+                    <div class="login-benefits">
+                        <div class="benefit-item">
+                            <i class="fas fa-calendar-plus"></i>
+                            <span>Create & Manage Events</span>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-users"></i>
+                            <span>Connect with Community</span>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-trophy"></i>
+                            <span>Earn Points & Achievements</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="login-form-container">
+                    <!-- Quick Login Options -->
+                    <div class="quick-auth">
+                        <h3>Get Started Quick</h3>
+                        <div class="auth-options">
+                            <button class="auth-option guest-btn" onclick="window.location.href='dashboard.html'">
+                                <i class="fas fa-user-circle"></i>
+                                <div>
+                                    <strong>Skip for Now</strong>
+                                    <small>Go directly to dashboard</small>
+                                </div>
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+
+                            <button class="auth-option google-btn disabled" onclick="loginWithGoogle()">
+                                <i class="fab fa-google"></i>
+                                <div>
+                                    <strong>Continue with Google</strong>
+                                    <small>Coming soon</small>
+                                </div>
+                                <i class="fas fa-lock" style="color: #ccc;"></i>
+                            </button>
+                        </div>
+
+                        <div class="divider">
+                            <span>or</span>
+                            <hr>
+                        </div>
+                    </div>
+
+                    <!-- Enhanced Login Form -->
+                    <div class="enhanced-login">
+                        <h3>Login to Your Account</h3>
+
+                        <!-- Social Login Options -->
+                        <div class="social-login">
+                            <button class="social-btn facebook-btn disabled" onclick="loginWithFacebook()">
+                                <i class="fab fa-facebook-f"></i> Facebook
+                            </button>
+                            <button class="social-btn twitter-btn disabled" onclick="loginWithTwitter()">
+                                <i class="fab fa-twitter"></i> Twitter
+                            </button>
+                            <button class="social-btn email-btn disabled" onclick="loginWithEmail()">
+                                <i class="fas fa-envelope"></i> Email
+                            </button>
+                        </div>
+
+                        <!-- Standard Login Form -->
+                        <form id="enhancedLoginForm" class="enhanced-form">
+                            <div class="form-header">
+                                <h4>Welcome Back</h4>
+                                <p>Enter your credentials to access your account</p>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="enhancedEmail">Email Address</label>
+                                <div class="input-group">
+                                    <i class="fas fa-envelope input-icon"></i>
+                                    <input type="email" id="enhancedEmail" required placeholder="Enter your email">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="enhancedPassword">Password</label>
+                                <div class="input-group">
+                                    <i class="fas fa-lock input-icon"></i>
+                                    <input type="password" id="enhancedPassword" required placeholder="Enter your password">
+                                    <i class="fas fa-eye toggle-password" onclick="togglePasswordVisibility(this)" id="passwordToggle"></i>
+                                </div>
+                            </div>
+
+                            <div class="form-options">
+                                <label class="checkbox-container">
+                                    <input type="checkbox" id="rememberLogin">
+                                    <span class="checkmark"></span>
+                                    Remember me
+                                </label>
+                                <a href="#forgot" onclick="showForgotPassword()" class="forgot-link">Forgot Password?</a>
+                            </div>
+
+                            <button type="submit" class="enhanced-login-btn" id="enhancedLoginBtn">
+                                <span class="btn-text">Login</span>
+                                <span class="loading-text" style="display: none;">Logging in...</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+
+                            <div class="form-footer">
+                                <p>Don't have an account? <a href="#register" onclick="showRegisterForm()">Sign Up</a></p>
+                            </div>
+                        </form>
+
+                        <!-- Register Form (hidden by default) -->
+                        <form id="enhancedRegisterForm" class="enhanced-form" style="display: none;">
+                            <div class="form-header">
+                                <h4>Create Your Account</h4>
+                                <p>Join thousands of students already using our platform</p>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="registerFirstName">First Name</label>
+                                    <input type="text" id="registerFirstName" required placeholder="John">
+                                </div>
+                                <div class="form-group">
+                                    <label for="registerLastName">Last Name</label>
+                                    <input type="text" id="registerLastName" required placeholder="Doe">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="registerEmail">Email Address</label>
+                                <div class="input-group">
+                                    <i class="fas fa-envelope input-icon"></i>
+                                    <input type="email" id="registerEmail" required placeholder="john@university.edu">
+                                </div>
+                                <small class="field-hint">Use your university email for verification</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="registerRole">I'm a</label>
+                                <div class="select-group">
+                                    <select id="registerRole" required>
+                                        <option value="">Select your role</option>
+                                        <option value="student">Student</option>
+                                        <option value="organizer">Event Organizer</option>
+                                        <option value="faculty">Faculty/Staff</option>
+                                        <option value="admin">Administrator</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down select-arrow"></i>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="registerPassword">Password</label>
+                                    <div class="input-group">
+                                        <i class="fas fa-lock input-icon"></i>
+                                        <input type="password" id="registerPassword" required placeholder="Create password">
+                                        <i class="fas fa-eye toggle-password" onclick="togglePasswordVisibility(this)"></i>
+                                    </div>
+                                    <div class="password-strength">
+                                        <div class="strength-meter" id="passwordStrengthMeter"></div>
+                                        <small id="strengthText">Weak</small>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="registerConfirmPassword">Confirm Password</label>
+                                    <input type="password" id="registerConfirmPassword" required placeholder="Confirm password">
+                                </div>
+                            </div>
+
+                            <div class="form-options">
+                                <label class="checkbox-container">
+                                    <input type="checkbox" id="termsAgreement" required>
+                                    <span class="checkmark"></span>
+                                    I agree to the <a href="#terms" onclick="showTermsModal()">Terms of Service</a>
+                                </label>
+                            </div>
+
+                            <button type="submit" class="enhanced-register-btn" id="enhancedRegisterBtn">
+                                <span class="btn-text">Create Account</span>
+                                <span class="loading-text" style="display: none;">Creating...</span>
+                                <i class="fas fa-user-plus"></i>
+                            </button>
+
+                            <div class="form-footer">
+                                <p>Already have an account? <a href="#login" onclick="showLoginForm()">Login</a></p>
+                            </div>
+                        </form>
+
+                        <!-- Forgot Password Form -->
+                        <form id="enhancedForgotForm" class="enhanced-form" style="display: none;">
+                            <div class="form-header">
+                                <h4>Reset Your Password</h4>
+                                <p>Enter your email address and we'll send you a reset link</p>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="forgotEmail">Email Address</label>
+                                <div class="input-group">
+                                    <i class="fas fa-envelope input-icon"></i>
+                                    <input type="email" id="forgotEmail" required placeholder="Enter your email">
+                                </div>
+                            </div>
+
+                            <button type="submit" class="enhanced-reset-btn" id="enhancedResetBtn">
+                                <span class="btn-text">Send Reset Link</span>
+                                <span class="loading-text" style="display: none;">Sending...</span>
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+
+                            <div class="form-footer">
+                                <p>Remember your password? <a href="#login" onclick="showLoginForm()">Back to Login</a></p>
+                            </div>
+                        </form>
+
+                        <!-- Success Messages -->
+                        <div id="loginSuccess" class="success-message" style="display: none;">
+                            <i class="fas fa-check-circle"></i>
+                            <h4>Welcome Back!</h4>
+                            <p>Login successful. Redirecting to dashboard...</p>
+                        </div>
+
+                        <div id="registerSuccess" class="success-message" style="display: none;">
+                            <i class="fas fa-user-check"></i>
+                            <h4>Account Created!</h4>
+                            <p>Welcome to Campus Event Hub! Check your email for verification.</p>
+                        </div>
+
+                        <div id="resetSuccess" class="success-message" style="display: none;">
+                            <i class="fas fa-envelope"></i>
+                            <h4>Reset Link Sent!</h4>
+                            <p>Please check your email for password reset instructions.</p>
+                        </div>
+
+                        <!-- Error Messages -->
+                        <div id="loginError" class="error-message" style="display: none;">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h4>Login Failed</h4>
+                            <p id="loginErrorText">Please check your credentials and try again.</p>
+                        </div>
+
+                        <div id="registerError" class="error-message" style="display: none;">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h4>Registration Failed</h4>
+                            <p id="registerErrorText">Please check your information and try again.</p>
+                        </div>
+
+                        <!-- QR Login Option -->
+                        <div class="qr-login-section">
+                            <button class="secondary-btn" onclick="showQRLogin()">
+                                <i class="fas fa-qrcode"></i> Login with QR Code
+                            </button>
+                        </div>
+
+                        <!-- Login Stats -->
+                        <div class="login-stats">
+                            <div class="stat">
+                                <div class="stat-number">10,000+</div>
+                                <div class="stat-label">Active Users</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-number">500+</div>
+                                <div class="stat-label">Events This Week</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-number">50+</div>
+                                <div class="stat-label">University Partners</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QR Login Modal (hidden by default) -->
+        <div id="qrLoginModal" class="qr-login-modal" style="display: none;">
+            <div class="qr-modal-content">
+                <div class="qr-header">
+                    <h3>Login with QR Code</h3>
+                    <button onclick="closeQRLogin()" class="close-btn">&times;</button>
+                </div>
+                <div class="qr-instructions">
+                    <p>Scan this QR code with your phone to quickly login:</p>
+                    <div class="qr-code-container" id="qrCodeContainer">
+                        <!-- QR Code will be generated here -->
+                    </div>
+                    <p class="qr-note">QR login is not functional yet in this demo</p>
+                </div>
+                <div class="qr-footer">
+                    <button onclick="closeQRLogin()" class="secondary-btn">Close</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>College Event Hub</h4>
+                    <p>Empowering students to create, manage, and celebrate campus events and club activities worldwide.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#events">Events</a></li>
+                        <li><a href="#support">Support</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#colleges">Colleges</a></li>
+                        <li><a href="#clubs">Clubs</a></li>
+                        <li><a href="#blog">Blog</a></li>
+                        <li><a href="#partners">Partners</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <address>
+                        Campus Center, Building A<br>
+                        College Name<br>
+                        City, State 12345<br>
+                        <a href="mailto:contact@collegeeventhub.com">contact@collegeeventhub.com</a>
+                    </address>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 College Event Hub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="homepage.js"></script>
+    <script src="enhanced_script.js"></script>
+
+    <!-- Authentication Container -->
+    <div id="authContainer" class="container-section auth-container" style="display: none;">
+        <div class="auth-modal">
+            <div class="auth-tabs">
+                <button class="auth-tab active" onclick="showAuthTab('login')">Login</button>
+                <button class="auth-tab" onclick="showAuthTab('register')">Register</button>
+                <button class="auth-tab" onclick="showAuthTab('forgot')">Forgot Password</button>
+            </div>
+
+            <!-- Login Form -->
+            <div id="loginForm" class="auth-form active">
+                <form id="loginFormElement">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" required aria-label="Email address">
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" required aria-label="Password">
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <label>
+                            <input type="checkbox" id="rememberMe"> Remember Me
+                        </label>
+                    </div>
+                    <button type="submit" class="auth-btn">Login</button>
+                    <div id="loginError" class="error-message"></div>
+                </form>
+            </div>
+
+            <!-- Registration Form -->
+            <div id="registerForm" class="auth-form" style="display: none;">
+                <form id="registerFormElement">
+                    <div class="form-group">
+                        <label for="registerName">Full Name</label>
+                        <input type="text" id="registerName" required aria-label="Full name">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerEmail">Email</label>
+                        <input type="email" id="registerEmail" required aria-label="Email address">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Password</label>
+                        <input type="password" id="registerPassword" required aria-label="Password">
+                        <div id="passwordStrength" class="password-strength"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerRole">Role</label>
+                        <select id="registerRole" aria-label="User role">
+                            <option value="user">Student</option>
+                            <option value="organizer">Event Organizer</option>
+                            <option value="admin">Administrator</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="auth-btn">Register</button>
+                    <div id="registerError" class="error-message"></div>
+                    <div id="registerSuccess" class="success-message" style="display: none;"></div>
+                </form>
+            </div>
+
+            <!-- Forgot Password Form -->
+            <div id="forgotForm" class="auth-form" style="display: none;">
+                <form id="forgotFormElement">
+                    <div class="form-group">
+                        <label for="forgotEmail">Enter your email to reset password</label>
+                        <input type="email" id="forgotEmail" required aria-label="Email for password reset">
+                    </div>
+                    <button type="submit" class="auth-btn">Send Reset Code</button>
+                    <div id="forgotError" class="error-message"></div>
+                    <div id="forgotSuccess" class="success-message" style="display: none;"></div>
+                </form>
+            </div>
+
+            <!-- Reset Password Form (shown after forgot email sent) -->
+            <div id="resetForm" class="auth-form" style="display: none;">
+                <form id="resetFormElement">
+                    <div class="form-group">
+                        <label for="resetCode">Reset Code</label>
+                        <input type="text" id="resetCode" required aria-label="Reset code">
+                    </div>
+                    <div class="form-group">
+                        <label for="newPassword">New Password</label>
+                        <input type="password" id="newPassword" required aria-label="New password">
+                        <div id="newPasswordStrength" class="password-strength"></div>
+                    </div>
+                    <button type="submit" class="auth-btn">Reset Password</button>
+                    <div id="resetError" class="error-message"></div>
+                    <div id="resetSuccess" class="success-message" style="display: none;"></div>
+                </form>
+            </div>
+
+            <button type="button" class="skip-btn" id="skipBtn" aria-label="Skip login and use as guest">Continue as Guest</button>
+        </div>
+    </div>
+
+    <!-- Main Application Container -->
+    <div id="mainApp" class="container-section main-app" style="display: none;">
+        <div class="app-header">
+            <div class="user-info" id="userInfo">
+                <span id="userName"></span>
+                <span id="userRole"></span>
+                <div class="user-level" id="userLevel"></div>
+            </div>
+            <div class="nav-actions">
+                <div class="quick-actions">
+                    <button class="quick-action-btn" data-tooltip="Quick Add Event" aria-label="Add new event quickly">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <button class="quick-action-btn" data-tooltip="Export Data" aria-label="Export all event data">
+                        <i class="fas fa-download"></i>
+                    </button>
+                    <button class="quick-action-btn" data-tooltip="Notifications" aria-label="View notifications">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <button class="theme-toggle" aria-label="Toggle dark/light theme">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button id="profileBtn" class="profile-btn" aria-label="View and edit profile">
+                        <i class="fas fa-user"></i>
+                    </button>
+                    <button id="logoutBtn" class="logout-btn" aria-label="Logout from account">
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <nav class="main-nav">
+            <div class="nav-tabs">
+                <button class="nav-tab active" onclick="showMainTab('dashboard')" aria-label="View dashboard overview">Dashboard</button>
+                <button class="nav-tab" onclick="showMainTab('events')" aria-label="Manage events">Events</button>
+                <button class="nav-tab" onclick="showMainTab('calendar')" aria-label="View calendar view">Calendar</button>
+                <button class="nav-tab" onclick="showMainTab('analytics')" aria-label="View analytics">Analytics</button>
+            </div>
+        </nav>
+
+        <!-- Content Areas -->
+        <div id="dashboard" class="tab-content">
+            <h2>Dashboard</h2>
+            <div class="dashboard-grid">
+                <div class="stat-card">
+                    <h3>Total Events</h3>
+                    <div class="stat-value" id="totalEvents">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Upcoming Events</h3>
+                    <div class="stat-value" id="upcomingEvents">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>My Events</h3>
+                    <div class="stat-value" id="myEvents">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Average Rating</h3>
+                    <div class="stat-value" id="averageRating">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Attendees</h3>
+                    <div class="stat-value" id="totalAttendees">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Comments</h3>
+                    <div class="stat-value" id="totalComments">0</div>
+                </div>
+            </div>
+            <div class="recent-activity">
+                <h3>Recent Activity</h3>
+                <div class="activity-feed" id="activityFeed"></div>
+                <div class="achievements-list"></div>
+            </div>
+        </div>
+
+        <div id="analytics" class="tab-content" style="display: none;">
+            <h2>Analytics</h2>
+            <div class="analytics-filters">
+                <select id="analyticsTimeRange" aria-label="Select time range for analytics">
+                    <option value="week">This Week</option>
+                    <option value="month">This Month</option>
+                    <option value="quarter">This Quarter</option>
+                    <option value="year">This Year</option>
+                </select>
+            </div>
+            <div class="analytics-grid">
+                <div class="metric-card">
+                    <h3>Events This Month</h3>
+                    <div class="metric-value" id="eventsThisMonth">0</div>
+                </div>
+                <div class="metric-card">
+                    <h3>Most Popular Category</h3>
+                    <div class="metric-value" id="mostPopularCategory">-</div>
+                </div>
+                <div class="metric-card">
+                    <h3>Average Attendance</h3>
+                    <div class="metric-value" id="averageAttendance">0</div>
+                </div>
+                <div class="metric-card">
+                    <h3>User Engagement (%)</h3>
+                    <div class="metric-value" id="userEngagement">0%</div>
+                </div>
+            </div>
+            <div class="charts-container">
+                <div class="chart-placeholder">
+                    <h3>Event Trends Chart</h3>
+                    <p>Chart visualization would appear here</p>
+                </div>
+            </div>
+            <div class="reports-section">
+                <h3>Download Reports</h3>
+                <div class="report-cards">
+                    <div class="report-card">
+                        <h4>Event Summary</h4>
+                        <p>Complete overview of all events</p>
+                        <button class="report-btn" aria-label="Download event summary report">Download PDF</button>
+                    </div>
+                    <div class="report-card">
+                        <h4>Attendance Report</h4>
+                        <p>Attendance statistics and trends</p>
+                        <button class="report-btn" aria-label="Download attendance report">Download PDF</button>
+                    </div>
+                    <div class="report-card">
+                        <h4>Category Analysis</h4>
+                        <p>Event category preferences</p>
+                        <button class="report-btn" aria-label="Download category analysis">Download PDF</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="calendarView" class="tab-content" style="display: none;">
+            <h2>Calendar</h2>
+            <div class="calendar-header">
+                <button onclick="previousPeriod()" aria-label="Go to previous month">« Previous</button>
+                <h3>Calendar Title</h3>
+                <button onclick="nextPeriod()" aria-label="Go to next month">Next »</button>
+                <button onclick="today()" aria-label="Go to today">Today</button>
+                <button onclick="advancedSearch()" aria-label="Advanced search and filters">Advanced Search</button>
+                <button onclick="addEventFromCalendar()" aria-label="Add new event from calendar">Add Event</button>
+            </div>
+            <div id="calendar" class="calendar-grid"></div>
+            <div class="calendar-filters">
+                <label><input type="checkbox" aria-label="Show academic events"> Academic</label>
+                <label><input type="checkbox" aria-label="Show sports events"> Sports</label>
+                <label><input type="checkbox" aria-label="Show cultural events"> Cultural</label>
+                <label><input type="checkbox" aria-label="Show social events"> Social</label>
+            </div>
+        </div>
+
+        <div id="eventForm" class="tab-content" style="display: none;">
+            <h2>Add New Event</h2>
+            <div class="form-section">
+                <form id="eventFormElement" enctype="multipart/form-data">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="eventTemplate">Event Template</label>
+                            <select id="eventTemplate" aria-label="Select event template">
+                                <option value="">Select a template</option>
+                                <option value="academic">Academic Seminar</option>
+                                <option value="sports">Sports Tournament</option>
+                                <option value="cultural">Cultural Festival</option>
+                                <option value="social">Social Gathering</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="title">Event Title *</label>
+                            <input type="text" id="title" required aria-label="Event title">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="category">Category *</label>
+                            <select id="category" required aria-label="Event category">
+                                <option value="academic">Academic</option>
+                                <option value="sports">Sports</option>
+                                <option value="cultural">Cultural</option>
+                                <option value="social">Social</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="date">Date *</label>
+                            <input type="date" id="date" required aria-label="Event date">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="time">Time *</label>
+                            <input type="time" id="time" required aria-label="Event time">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="location">Location *</label>
+                            <input type="text" id="location" required aria-label="Event location">
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="description">Description</label>
+                            <textarea id="description" rows="4" aria-label="Event description"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="eventImage">Event Image</label>
+                            <input type="file" id="eventImage" accept="image/*" aria-label="Upload event image">
+                            <img id="imagePreview" alt="Image preview" style="display: none; max-width: 200px; margin-top: 10px;">
+                        </div>
+
+                        <div class="form-group checkbox-group">
+                            <label>
+                                <input type="checkbox" id="enableReminders" aria-label="Enable event reminders"> Enable Reminders
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Create Event</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="eventList" class="tab-content" style="display: none;">
+            <h2>Event Management</h2>
+            <div class="events-header">
+                <div class="search-filters">
+                    <input type="text" id="searchInput" placeholder="Search events..." aria-label="Search events">
+                    <select id="categoryFilter" aria-label="Filter by category">
+                        <option value="">All Categories</option>
+                        <option value="academic">Academic</option>
+                        <option value="sports">Sports</option>
+                        <option value="cultural">Cultural</option>
+                        <option value="social">Social</option>
+                    </select>
+                    <select id="dateFilter" aria-label="Filter by date">
+                        <option value="">All Dates</option>
+                        <option value="today">Today</option>
+                        <option value="thisWeek">This Week</option>
+                        <option value="thisMonth">This Month</option>
+                    </select>
+                    <button onclick="clearFilters()" aria-label="Clear all filters">Clear Filters</button>
+                    <button onclick="toggleBulkActions()" aria-label="Show bulk actions">Bulk Actions</button>
+                </div>
+            </div>
+
+            <div id="bulkActions" class="bulk-actions" style="display: none;">
+                <button onclick="selectAllEvents()" aria-label="Select all events">Select All</button>
+                <button onclick="deleteSelectedEvents()" aria-label="Delete selected events">Delete Selected</button>
+                <button onclick="exportSelectedEvents()" aria-label="Export selected events">Export Selected</button>
+            </div>
+
+            <div id="eventsContainer" class="events-container"></div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div id="profileContainer" class="container-section profile-modal" style="display: none;">
+        <div class="profile-content">
+            <h2>Profile Settings</h2>
+            <form id="profileForm">
+                <div class="form-group">
+                    <label for="profileName">Name</label>
+                    <input type="text" id="profileName" required aria-label="Update name">
+                </div>
+                <div class="form-group">
+                    <label for="profileEmail">Email</label>
+                    <input type="email" id="profileEmail" required aria-label="Update email">
+                </div>
+                <div class="form-group">
+                    <label for="profilePassword">New Password (optional)</label>
+                    <input type="password" id="profilePassword" aria-label="Set new password">
+                    <div id="profilePasswordStrength" class="password-strength"></div>
+                </div>
+                <button type="submit" class="submit-btn">Update Profile</button>
+            </form>
+            <button id="backToMainBtn" class="back-btn" aria-label="Return to main application">Back to Main</button>
+        </div>
+    </div>
+
+    <!-- Notification Bar -->
+    <div id="notificationBar" class="notification-bar" style="display: none;">
+        <h3>Notifications</h3>
+        <div class="notification-list"></div>
+    </div>
+
+    <!-- Global Notification Element -->
+    <div id="notification" class="notification" style="display: none;"></div>
+
+</body>
+</html>

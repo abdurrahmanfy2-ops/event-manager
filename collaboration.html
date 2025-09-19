@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Club Collaboration - College Event Hub</title>
+    <link rel="stylesheet" href="homepage.css">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .collaboration-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .collaboration-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .collab-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease;
+        }
+
+        .collab-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .club-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .club-card {
+            background: white;
+            border: 2px solid #f1f5f9;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .club-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .club-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            border: 3px solid transparent;
+        }
+
+        .club-card-type {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .club-card-type.academic { background: #dbeafe; color: #1e40af; }
+        .club-card-type.cultural { background: #fce7f3; color: #be185d; }
+        .club-card-type.sports { background: #dcfce7; color: #15803d; }
+        .club-card-type.social { background: #fef3c7; color: #d97706; }
+
+        .message-board {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        .message-thread {
+            border-bottom: 1px solid #e1e5e9;
+            padding: 1rem;
+        }
+
+        .message-thread:last-child {
+            border-bottom: none;
+        }
+
+        .message-content {
+            margin-left: 3rem;
+        }
+
+        .reply-form {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 8px;
+        }
+
+        .reply-textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .reply-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 0.5rem;
+        }
+
+        .events-suggestions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .suggestion-card {
+            background: white;
+            border: 2px solid #f1f5f9;
+            border-radius: 12px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .suggestion-card:hover {
+            border-color: #10b981;
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .project-management {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        .project-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-planning { background: #fef3c7; color: #d97706; }
+        .status-active { background: #dbeafe; color: #2563eb; }
+        .status-review { background: #dcfce7; color: #15803d; }
+        .status-complete { background: #ecfdf5; color: #065f46; }
+
+        .progress-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .resources-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        .resource-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #e1e5e9;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .resource-item:hover {
+            background: #f8fafc;
+        }
+
+        .resource-item:last-child {
+            border-bottom: none;
+        }
+
+        .resource-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+        }
+
+        .notification-settings {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        .setting-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e1e5e9;
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 24px;
+            background: #d1d5db;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: #10b981;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .toggle-switch.active .toggle-slider {
+            transform: translateX(26px);
+        }
+
+        @media (max-width: 768px) {
+            .collaboration-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .club-list {
+                grid-template-columns: 1fr;
+            }
+
+            .events-suggestions {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <i class="fas fa-arrow-left" onclick="window.location.href='index.html'"></i>
+                Back to Home
+            </div>
+            <div class="nav-links">
+                <a href="event-tracker.html">Event Tracker</a>
+                <a href="club-dashboard.html">Club Dashboard</a>
+                <a href="collaboration.html" class="active">Collaboration</a>
+                <a href="registration.html">Registration</a>
+                <a href="gallery.html">Gallery</a>
+                <a href="index.html" class="cta-button">Back to Events</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <section class="collaboration-header">
+        <div class="container">
+            <h1><i class="fas fa-handshake"></i> Club Collaboration Platform</h1>
+            <p>Connect with other clubs, manage joint projects, and share resources for better campus experiences</p>
+        </div>
+    </section>
+
+    <section class="container">
+        <!-- Active Collaborations & Clubs -->
+        <div class="collaboration-grid">
+            <div class="collab-section">
+                <h2><i class="fas fa-users"></i> Active Clubs (15)</h2>
+                <div class="club-list">
+                    <div class="club-card" onclick="viewClub('music')">
+                        <div class="club-avatar" style="background: linear-gradient(135deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-music" style="color: white;"></i>
+                        </div>
+                        <h4>Music Club</h4>
+                        <div class="club-card-type cultural">Cultural</div>
+                    </div>
+                    <div class="club-card" onclick="viewClub('tech')">
+                        <div class="club-avatar" style="background: linear-gradient(135deg, #10b981, #34d399); display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-laptop-code" style="color: white;"></i>
+                        </div>
+                        <h4>Tech Society</h4>
+                        <div class="club-card-type academic">Academic</div>
+                    </div>
+                    <div class="club-card" onclick="viewClub('environment')">
+                        <div class="club-avatar" style="background: linear-gradient(135deg, #f59e0b, #fbbf24); display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-leaf" style="color: white;"></i>
+                        </div>
+                        <h4>Green Action</h4>
+                        <div class="club-card-type social">Social Impact</div>
+                    </div>
+                    <div class="club-card" onclick="viewClub('sports')">
+                        <div class="club-avatar" style="background: linear-gradient(135deg, #ec4899, #f472b6); display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-basketball-ball" style="color: white;"></i>
+                        </div>
+                        <h4>Sports Association</h4>
+                        <div class="club-card-type sports">Sports</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collab-section">
+                <h2><i class="fas fa-calendar-plus"></i> Joint Event Suggestions</h2>
+                <div class="events-suggestions">
+                    <div class="suggestion-card" onclick="viewSuggestion('music-sport')">
+                        <h4>Music & Sports Night</h4>
+                        <p>Music Club + Sports Club</p>
+                        <div style="color: #64748b; font-size: 0.9rem;">
+                            Combine music with sports activities for a fun evening
+                        </div>
+                    </div>
+                    <div class="suggestion-card" onclick="viewSuggestion('tech-environment')">
+                        <h4>Eco-Tech Expo</h4>
+                        <p>Tech Society + Green Action</p>
+                        <div style="color: #64748b; font-size: 0.9rem;">
+                            Showcase innovative solutions for environmental challenges
+                        </div>
+                    </div>
+                    <div class="suggestion-card" onclick="viewSuggestion('all-clubs')">
+                        <h4>Campus Unity Week</h4>
+                        <p>All Clubs Welcome</p>
+                        <div style="color: #64748b; font-size: 0.9rem;">
+                            Collaborative week featuring all college clubs together
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Message Board -->
+        <div class="message-board">
+            <h2><i class="fas fa-comments"></i> Collaboration Discussions</h2>
+            <div class="message-thread">
+                <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                    <img src="https://images.unsplash.com/photo-1494790108755-2616b50ad229?w=40&h=40&fit=crop&crop=face" alt="Music Club" style="border-radius: 50%; margin-right: 10px;">
+                    <div>
+                        <strong>Music Club</strong>
+                        <div style="font-size: 0.8rem; color: #64748b;">2 hours ago</div>
+                    </div>
+                </div>
+                <div class="message-content">
+                    <p>Hey everyone! We're planning our annual Spring Music Festival and would love to collaborate. Any clubs interested in joining us for food trucks, performances, or photo booth setups?</p>
+                    <div style="margin-top: 0.5rem;"><i class="fas fa-heart"></i> <span>12</span> <i class="fas fa-reply" style="margin-left: 1rem;"></i> <span>3 replies</span></div>
+                </div>
+                <div class="reply-form" id="reply-form-music" style="display: none;">
+                    <textarea class="reply-textarea" placeholder="Write your reply..."></textarea>
+                    <button class="reply-btn" onclick="submitReply('music')">Reply</button>
+                </div>
+            </div>
+
+            <div class="message-thread">
+                <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face" alt="Tech Society" style="border-radius: 50%; margin-right: 10px;">
+                    <div>
+                        <strong>Tech Society</strong>
+                        <div style="font-size: 0.8rem; color: #64748b;">4 hours ago</div>
+                    </div>
+                </div>
+                <div class="message-content">
+                    <p>We have access to professional sound equipment and could help with lighting for the Music Festival. We could also set up coding workshops during the event! Looking forward to collaborating.</p>
+                    <div style="margin-top: 0.5rem;"><i class="fas fa-heart"></i> <span>8</span> <i class="fas fa-reply" style="margin-left: 1rem;"></i> <span>1 reply</span></div>
+                </div>
+            </div>
+
+            <div class="message-thread">
+                <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop&crop=face" alt="Green Action" style="border-radius: 50%; margin-right: 10px;">
+                    <div>
+                        <strong>Green Action Club</strong>
+                        <div style="font-size: 0.8rem; color: #64748b;">6 hours ago</div>
+                    </div>
+                </div>
+                <div class="message-content">
+                    <p>Count us in! We can provide eco-friendly recycling stations and promote sustainability during your festival. This sounds like an amazing interdisciplinary event!</p>
+                    <div style="margin-top: 0.5rem;"><i class="fas fa-heart"></i> <span>15</span> <i class="fas fa-reply" style="margin-left: 1rem;"></i> <span>2 replies</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Joint Projects -->
+        <div class="project-management">
+            <h2><i class="fas fa-project-diagram"></i> Joint Projects</h2>
+            <div style="margin-bottom: 1rem;">
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem; background: #f8fafc; border-radius: 8px; margin-bottom: 1rem;">
+                    <div>
+                        <h4 style="margin: 0;">Spring Music Festival 2025</h4>
+                        <p style="margin: 5px 0; color: #64748b;">Music Club + Tech Society + Green Action + Sports Association</p>
+                        <div class="project-status">
+                            <div class="progress-circle" style="background: linear-gradient(135deg, #f59e0b, #fbbf24);">75%</div>
+                            <div class="status-badge status-active">Active</div>
+                        </div>
+                    </div>
+                    <button style="background: #667eea; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">View Details</button>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem; background: #f8fafc; border-radius: 8px;">
+                    <div>
+                        <h4 style="margin: 0;">Campus Career Week</h4>
+                        <p style="margin: 5px 0; color: #64748b;">Tech Society + Arts Council</p>
+                        <div class="project-status">
+                            <div class="progress-circle" style="background: linear-gradient(135deg, #10b981, #34d399);">30%</div>
+                            <div class="status-badge status-planning">Planning</div>
+                        </div>
+                    </div>
+                    <button style="background: #667eea; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">View Details</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shared Resources -->
+        <div class="resources-section">
+            <h2><i class="fas fa-box-open"></i> Shared Resources</h2>
+            <div class="resource-item">
+                <div class="resource-icon" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                    <i class="fas fa-volume-up" style="color: white;"></i>
+                </div>
+                <div>
+                    <strong>Professional Sound System</strong>
+                    <div style="color: #64748b; font-size: 0.9rem;">Provided by: Music Club - Available for all campus events</div>
+                </div>
+                <i class="fas fa-external-link-alt" style="color: #667eea;"></i>
+            </div>
+            <div class="resource-item">
+                <div class="resource-icon" style="background: linear-gradient(135deg, #10b981, #34d399);">
+                    <i class="fas fa-projector" style="color: white;"></i>
+                </div>
+                <div>
+                    <strong>Multimedia Projectors</strong>
+                    <div style="color: #64748b; font-size: 0.9rem;">Provided by: Tech Society - Multiple units available</div>
+                </div>
+                <i class="fas fa-external-link-alt" style="color: #667eea;"></i>
+            </div>
+            <div class="resource-item">
+                <div class="resource-icon" style="background: linear-gradient(135deg, #f59e0b, #fbbf24);">
+                    <i class="fas fa-recycle" style="color: white;"></i>
+                </div>
+                <div>
+                    <strong>Eco-friendly Materials</strong>
+                    <div style="color: #64748b; font-size: 0.9rem;">Provided by: Green Action - Sustainable alternatives</div>
+                </div>
+                <i class="fas fa-external-link-alt" style="color: #667eea;"></i>
+            </div>
+            <div class="resource-item">
+                <div class="resource-icon" style="background: linear-gradient(135deg, #ec4899, #f472b6);">
+                    <i class="fas fa-basketball-ball" style="color: white;"></i>
+                </div>
+                <div>
+                    <strong>Sports Equipment</strong>
+                    <div style="color: #64748b; font-size: 0.9rem;">Provided by: Sports Association - Various sports gear</div>
+                </div>
+                <i class="fas fa-external-link-alt" style="color: #667eea;"></i>
+            </div>
+        </div>
+
+        <!-- Notification Settings -->
+        <div class="notification-settings">
+            <h2><i class="fas fa-bell"></i> Collaboration Notifications</h2>
+            <div class="setting-item">
+                <div>
+                    <strong>New Collaboration Opportunities</strong>
+                    <div style="color: #64748b; font-size: 0.9rem;">Get notified when other clubs express interest in collaborating</div>
+                </div>
+                <div class="toggle-switch active" onclick="toggleSetting(this)">
+                    <div class="toggle-slider"></div>
+                </div>
+            </div>
+            <div class="setting-item">
+                <div>
+                    <strong>Joint Event Updates</strong>
+                    <div style="color: #64748b; font-size: 0.9rem;">Receive updates about joint projects and events</div>
+                </div>
+                <div class="toggle-switch active" onclick="toggleSetting(this)">
+                    <div class="toggle-slider"></div>
+                </div>
+            </div>
+            <div class="setting-item">
+                <div>
+                    <strong>Resource Availability</strong>
+                    <div style="color: #64748b; font-size: 0.9rem;">Notifications when shared resources become available</div>
+                </div>
+                <div class="toggle-switch" onclick="toggleSetting(this)">
+                    <div class="toggle-slider"></div>
+                </div>
+            </div>
+            <div class="setting-item">
+                <div>
+                    <strong>Collaboration Messages</strong>
+                    <div style="color: #64748b; font-size: 0.9rem;">New messages in discussion threads</div>
+                </div>
+                <div class="toggle-switch active" onclick="toggleSetting(this)">
+                    <div class="toggle-slider"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function viewClub(clubId) {
+            alert('Club profile view would open for: ' + clubId);
+        }
+
+        function viewSuggestion(suggestionId) {
+            alert('Collaboration suggestion details would open for: ' + suggestionId);
+        }
+
+        function submitReply(clubId) {
+            const replyForm = document.getElementById('reply-form-' + clubId);
+            replyForm.style.display = 'none';
+            alert('Reply submitted successfully!');
+        }
+
+        function toggleSetting(toggle) {
+            toggle.classList.toggle('active');
+        }
+
+        // Add click handlers for reply buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const replyButtons = document.querySelectorAll('.fa-reply');
+            replyButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const replyForm = this.closest('.message-thread').querySelector('.reply-form');
+                    replyForm.style.display = replyForm.style.display === 'none' ? 'block' : 'none';
+                });
+            });
+        });
+    </script>
+</body>
+</html></content>

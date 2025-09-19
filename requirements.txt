@@ -1,0 +1,48 @@
+# College Event Hub - Production Dependencies
+
+# Core Web Framework
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+pydantic==2.4.2
+
+# Authentication & Security
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+cryptography==41.0.5
+python-multipart==0.0.6
+
+# Database (MongoDB)
+motor==3.3.2
+pymongo==4.5.0
+
+# File Storage & Processing
+Pillow==10.0.1
+python-magic==0.4.27
+
+# Cloud Storage
+boto3==1.28.62
+google-cloud-storage==2.10.0
+azure-storage-blob==12.16.0
+
+# Email Service
+sendgrid==6.9.7
+
+# Environment & Configuration
+python-dotenv==1.0.0
+
+# CORS & Middleware
+python-multipart==0.0.6
+
+# Optional: Performance & Monitoring
+gunicorn==20.1.0
+uvloop==0.17.0
+
+# Development (can be removed for production)
+pytest==7.4.0
+black==23.7.0
+flake8==6.0.0
+
+# Production: Add these for enhanced performance
+# httpx==0.25.0
+# orjson==3.9.5
+# pydantic[email]==2.4.2

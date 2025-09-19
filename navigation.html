@@ -1,0 +1,662 @@
+<!-- Shared Navigation Component -->
+<!-- Include this file in other pages using: <link rel="import" href="navigation.html"> -->
+
+<style>
+/* Enhanced Navigation Styles */
+header.navbar {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+
+header.navbar.scrolled {
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 5px 30px rgba(0,0,0,0.15);
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+}
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    color: #333;
+    font-weight: 700;
+    font-size: 1.5rem;
+    transition: color 0.3s ease;
+}
+
+.nav-logo:hover {
+    color: #667eea;
+    text-decoration: none;
+}
+
+.nav-logo i {
+    color: #667eea;
+    font-size: 1.8rem;
+}
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.nav-item {
+    position: relative;
+}
+
+.nav-link {
+    padding: 0.75rem 1rem;
+    color: #555;
+    text-decoration: none;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: #667eea;
+    background: rgba(102, 126, 234, 0.1);
+    text-decoration: none;
+}
+
+.nav-link i {
+    font-size: 0.9rem;
+}
+
+.nav-dropdown {
+    position: relative;
+}
+
+.nav-dropdown-toggle {
+    cursor: pointer;
+    padding: 0.75rem 1rem;
+    color: #555;
+    text-decoration: none;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.nav-dropdown-toggle:hover {
+    color: #667eea;
+    background: rgba(102, 126, 234, 0.1);
+    text-decoration: none;
+}
+
+.nav-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: #fff;
+    min-width: 200px;
+    border-radius: 12px;
+    box-shadow: 0 5px 30px rgba(0,0,0,0.15);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    margin-top: 0.5rem;
+    border: 1px solid #e1e5e9;
+}
+
+.nav-dropdown:hover .nav-dropdown-menu,
+.nav-dropdown.show .nav-dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-item {
+    padding: 1rem;
+    color: #555;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: all 0.3s ease;
+}
+
+.dropdown-item:hover {
+    background: rgba(102, 126, 234, 0.1);
+    color: #333;
+    text-decoration: none;
+}
+
+.dropdown-item i {
+    color: #667eea;
+    width: 18px;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background: #e1e5e9;
+    margin: 0.5rem 0;
+}
+
+.nav-auth {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.btn-login {
+    padding: 0.6rem 1.5rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-login:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+}
+
+.authenticated-user {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 1rem;
+    background: rgba(102, 126, 234, 0.1);
+    border-radius: 50px;
+    font-weight: 500;
+    color: #333;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #667eea;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.btn-logout {
+    background: none;
+    border: none;
+    color: #e53e3e;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-logout:hover {
+    color: #c53030;
+}
+
+.mobile-menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #555;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.mobile-menu-toggle:hover {
+    color: #667eea;
+}
+
+/* Notification Badge */
+.nav-link .notification-badge {
+    background: #e53e3e;
+    color: white;
+    border-radius: 50%;
+    font-size: 0.75rem;
+    padding: 0.2rem 0.5rem;
+    margin-left: 0.5rem;
+    min-width: 20px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.notification-badge.hidden {
+    display: none;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .nav-container {
+        padding: 1rem;
+    }
+
+    .nav-logo {
+        flex: 1;
+    }
+
+    .nav-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        flex-direction: column;
+        align-items: stretch;
+        padding: 1rem 0;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        border-top: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .nav-menu.active {
+        display: flex;
+    }
+
+    .nav-item {
+        margin: 0.25rem 1rem;
+    }
+
+    .mobile-menu-toggle {
+        display: block;
+        order: 2;
+    }
+
+    .nav-dropdown-menu {
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        box-shadow: none;
+        border: none;
+        background: rgba(102, 126, 234, 0.05);
+        margin-top: 0.5rem;
+    }
+
+    .dropdown-item:first-child {
+        border-top: 1px solid #e1e5e9;
+    }
+}
+
+/* Search Bar Styles */
+.nav-search {
+    position: relative;
+    margin: 0 1rem;
+}
+
+.search-input {
+    padding: 0.6rem 2rem 0.6rem 1rem;
+    border: 2px solid #e1e5e9;
+    border-radius: 25px;
+    width: 200px;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #667eea;
+    width: 250px;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.search-btn {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.search-btn:hover {
+    color: #667eea;
+}
+</style>
+
+<header class="navbar" id="main-navbar">
+    <div class="nav-container">
+        <!-- Logo -->
+        <a href="index.html" class="nav-logo">
+            <i class="fas fa-university"></i>
+            Event Hub
+        </a>
+
+        <!-- Mobile Menu Toggle (Hidden on desktop) -->
+        <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Navigation Menu -->
+        <nav class="nav-menu" id="nav-menu">
+            <!-- Main Navigation Links -->
+            <div class="nav-item">
+                <a href="index.html" class="nav-link" data-page="home">
+                    <i class="fas fa-home"></i>
+                    Home
+                </a>
+            </div>
+
+            <!-- Events Dropdown -->
+            <div class="nav-item nav-dropdown">
+                <a class="nav-link nav-dropdown-toggle">
+                    <i class="fas fa-calendar-alt"></i>
+                    Events
+                    <i class="fas fa-chevron-down"></i>
+                </a>
+                <div class="nav-dropdown-menu">
+                    <a href="club-dashboard.html" class="dropdown-item">
+                        <i class="fas fa-chart-line"></i>
+                        Dashboard
+                    </a>
+                    <a href="event-tracker.html" class="dropdown-item">
+                        <i class="fas fa-search"></i>
+                        Track Events
+                    </a>
+                    <a href="registration.html" class="dropdown-item">
+                        <i class="fas fa-ticket-alt"></i>
+                        Register
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="gallery.html" class="dropdown-item">
+                        <i class="fas fa-images"></i>
+                        Gallery
+                    </a>
+                </div>
+            </div>
+
+            <!-- Collaboration -->
+            <div class="nav-item">
+                <a href="collaboration.html" class="nav-link" data-page="collaboration">
+                    <i class="fas fa-users"></i>
+                    Collaborate
+                </a>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="nav-search">
+                <input type="text" class="search-input" placeholder="Search events..." id="nav-search">
+                <button class="search-btn" id="nav-search-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+
+            <!-- Authentication -->
+            <div class="nav-item nav-auth" id="nav-auth">
+                <!-- Login Button (shown when not authenticated) -->
+                <a href="login.html" class="btn-login" id="nav-login">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Sign In
+                </a>
+
+                <!-- User Menu (shown when authenticated) -->
+                <div class="nav-dropdown" id="nav-user-menu" style="display: none;">
+                    <div class="authenticated-user nav-dropdown-toggle">
+                        <div class="user-avatar" id="user-avatar">
+                            <span id="user-initials"></span>
+                        </div>
+                        <span id="user-name-display"></span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="nav-dropdown-menu">
+                        <div class="dropdown-item user-info">
+                            <div>
+                                <strong id="user-full-name"></strong><br>
+                                <small id="user-email"></small>
+                            </div>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <a href="club-dashboard.html" class="dropdown-item">
+                            <i class="fas fa-tachometer-alt"></i>
+                            Dashboard
+                        </a>
+                        <a href="#" class="dropdown-item" id="nav-profile">
+                            <i class="fas fa-user"></i>
+                            Profile
+                        </a>
+                        <a href="#" class="dropdown-item" id="nav-notifications">
+                            <i class="fas fa-bell"></i>
+                            Notifications
+                            <span class="notification-badge" id="notification-badge"></span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <button type="button" class="dropdown-item btn-logout" id="nav-logout">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Sign Out
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize navigation
+    initializeNavigation();
+
+    // Load authentication utilities if not already loaded
+    if (!window.AuthManager) {
+        const authScript = document.createElement('script');
+        authScript.src = 'auth-utils.js';
+        authScript.onload = initializeAuthNavigation;
+        document.head.appendChild(authScript);
+    } else {
+        initializeAuthNavigation();
+    }
+});
+
+function initializeNavigation() {
+    // Mobile menu toggle
+    const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+    const navMenu = document.getElementById('nav-menu');
+
+    if (mobileMenuToggle && navMenu) {
+        mobileMenuToggle.addEventListener('click', function() {
+            navMenu.classList.toggle('active');
+            const icon = this.querySelector('i');
+            icon.className = navMenu.classList.contains('active')
+                ? 'fas fa-times'
+                : 'fas fa-bars';
+        });
+    }
+
+    // Search functionality
+    const searchInput = document.getElementById('nav-search');
+    const searchBtn = document.getElementById('nav-search-btn');
+
+    if (searchInput && searchBtn) {
+        searchBtn.addEventListener('click', performSearch);
+
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+    }
+
+    // Highlight active page
+    highlightActivePage();
+
+    // Add scroll effect
+    window.addEventListener('scroll', function() {
+        const navbar = document.getElementById('main-navbar');
+        const scrolled = window.scrollY > 10;
+
+        if (navbar) {
+            navbar.classList.toggle('scrolled', scrolled);
+        }
+    });
+}
+
+function initializeAuthNavigation() {
+    if (!window.AuthManager) return;
+
+    // Update UI based on auth state
+    updateAuthUI();
+
+    // Listen for auth changes
+    document.addEventListener('authStateChanged', updateAuthUI);
+
+    // Handle profile link
+    const profileLink = document.getElementById('nav-profile');
+    if (profileLink) {
+        profileLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('Profile page will be implemented in the next update');
+        });
+    }
+
+    // Handle notifications link
+    const notificationsLink = document.getElementById('nav-notifications');
+    if (notificationsLink) {
+        notificationsLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            showNotifications();
+        });
+    }
+
+    // Auto-update user info
+    updateUserDisplay();
+}
+
+function updateAuthUI() {
+    if (!window.AuthManager) return;
+
+    const user = window.AuthManager.getCurrentUser();
+    const isAuthenticated = window.AuthManager.isAuthenticated();
+
+    const loginBtn = document.getElementById('nav-login');
+    const userMenu = document.getElementById('nav-user-menu');
+
+    if (loginBtn) loginBtn.style.display = isAuthenticated ? 'none' : 'block';
+    if (userMenu) userMenu.style.display = isAuthenticated ? 'block' : 'none';
+
+    // Update user display
+    if (isAuthenticated && user) {
+        updateUserDisplay(user);
+    }
+}
+
+function updateUserDisplay(user) {
+    if (!user) return;
+
+    const initialsElement = document.getElementById('user-initials');
+    const nameDisplay = document.getElementById('user-name-display');
+    const fullName = document.getElementById('user-full-name');
+    const email = document.getElementById('user-email');
+
+    if (initialsElement) {
+        initialsElement.textContent = getInitials(user.name);
+    }
+
+    if (nameDisplay) {
+        nameDisplay.textContent = user.name.split(' ')[0];
+    }
+
+    if (fullName) {
+        fullName.textContent = user.name;
+    }
+
+    if (email) {
+        email.textContent = user.email;
+    }
+}
+
+function getInitials(name) {
+    if (!name) return '?';
+    return name.split(' ')
+               .map(n => n[0])
+               .join('')
+               .toUpperCase()
+               .substring(0, 2);
+}
+
+function highlightActivePage() {
+    const currentPath = window.location.pathname;
+    const currentPage = currentPath.split('/').pop().replace('.html', '') || 'index';
+
+    const navLinks = document.querySelectorAll('.nav-link[data-page]');
+    navLinks.forEach(link => {
+        const page = link.getAttribute('data-page');
+        if (page && currentPath.includes(page)) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
+    });
+
+    // Also check dropdown items
+    const dropdownItems = document.querySelectorAll('.nav-dropdown-menu .dropdown-item');
+    dropdownItems.forEach(item => {
+        const href = item.getAttribute('href');
+        if (href && currentPath.includes(href.replace('.html', ''))) {
+            item.classList.add('active');
+        } else {
+            item.classList.remove('active');
+        }
+    });
+}
+
+function performSearch() {
+    const searchInput = document.getElementById('nav-search');
+    const query = searchInput ? searchInput.value.trim() : '';
+
+    if (query) {
+        // For now, search in events
+        console.log('🔍 Searching for:', query);
+        // TODO: Implement search functionality
+        alert(`Search functionality for "${query}" will be implemented in the next update`);
+    }
+}
+
+function showNotifications() {
+    // Simulate notifications
+    const notifications = [
+        { type: 'event_reminder', title: 'Spring Music Festival', message: 'Tomorrow at 2:00 PM' },
+        { type: 'achievement', title: 'Event Organizer Badge', message: 'Congratulations!' }
+    ];
+
+    alert(`You have ${notifications.length} new notifications:\n\n${notifications.map(n => `• ${n.title}: ${n.message}`).join('\n')}`);
+}
+
+// Global logout function for use in other scripts
+window.handleGlobalLogout = function() {
+    if (confirm('Are you sure you want to sign out?')) {
+        if (window.AuthManager) {
+            window.AuthManager.logout();
+        }
+        window.location.href = 'login.html';
+    }
+};
+</script>

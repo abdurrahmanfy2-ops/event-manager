@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Tracker - College Event Hub</title>
+    <link rel="stylesheet" href="homepage.css">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .tracker-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .tracker-filters {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-group label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #374151;
+        }
+
+        .filter-group select,
+        .filter-group input[type="text"],
+        .filter-group .date-input {
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .attendance-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .event-attendance-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease;
+        }
+
+        .event-attendance-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .event-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .event-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .attendance-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 8px;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        .attendance-progress {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #e1e5e9;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #34d399);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .check-in-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        .check-in-form {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .check-in-btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.2s ease;
+        }
+
+        .check-in-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .attendance-trends {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .trends-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .trend-item {
+            padding: 1rem;
+            border: 1px solid #e1e5e9;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .trend-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.25rem;
+        }
+
+        .export-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        .export-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .export-btn {
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: transform 0.2s ease;
+        }
+
+        .export-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .tracker-filters {
+                grid-template-columns: 1fr;
+            }
+
+            .attendance-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <i class="fas fa-arrow-left" onclick="window.location.href='index.html'"></i>
+                Back to Home
+            </div>
+            <div class="nav-links">
+                <a href="event-tracker.html" class="active">Event Tracker</a>
+                <a href="club-dashboard.html">Club Dashboard</a>
+                <a href="collaboration.html">Collaboration</a>
+                <a href="registration.html">Registration</a>
+                <a href="gallery.html">Gallery</a>
+                <a href="index.html" class="cta-button">Back to Events</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Tracker Header -->
+    <section class="tracker-header">
+        <div class="container">
+            <h1><i class="fas fa-chart bar"></i> Event Tracker</h1>
+            <p>Track attendance, manage RSVPs, and monitor event engagement in real-time</p>
+        </div>
+    </section>
+
+    <section class="tracker-content container">
+        <!-- Filters -->
+        <div class="tracker-filters">
+            <div class="filter-group">
+                <label>Event Category</label>
+                <select id="categoryFilter">
+                    <option value="">All Categories</option>
+                    <option value="academic">Academic</option>
+                    <option value="social">Social</option>
+                    <option value="cultural">Cultural</option>
+                    <option value="sports">Sports</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Date Range</label>
+                <select id="dateRangeFilter">
+                    <option value="">All Dates</option>
+                    <option value="today">Today</option>
+                    <option value="week">This Week</option>
+                    <option value="month">This Month</option>
+                    <option value="quarter">This Quarter</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Search Event</label>
+                <input type="text" id="searchFilter" placeholder="Search events...">
+            </div>
+            <div class="filter-group">
+                <label>Attendance Status</label>
+                <select id="statusFilter">
+                    <option value="">All Events</option>
+                    <option value="open">Registration Open</option>
+                    <option value="finished">Event Finished</option>
+                    <option value="cancelled">Cancelled</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Attendance Overview -->
+        <div class="attendance-grid">
+            <div class="event-attendance-card">
+                <div class="event-header">
+                    <div class="event-icon" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                        <i class="fas fa-music" style="color: white;"></i>
+                    </div>
+                    <div>
+                        <h3.Spring Music Festival</h3>
+                        <div style="color: #64748b; font-size: 0.9rem;">Main Hall • March 28, 2025</div>
+                    </div>
+                </div>
+                <div class="attendance-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">247</span>
+                        <span class="stat-label">Registered</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">89</span>
+                        <span class="stat-label">Checked In</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">36%</span>
+                        <span class="stat-label">Attendance Rate</span>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 36%;"></div>
+                </div>
+                <div style="text-align: center; margin-top: 0.5rem;">
+                    <small style="color: #64748b;">Capacity: 300 • Remaining: 53</small>
+                </div>
+            </div>
+
+            <div class="event-attendance-card">
+                <div class="event-header">
+                    <div class="event-icon" style="background: linear-gradient(135deg, #10b981, #34d399);">
+                        <i class="fas fa-flask" style="color: white;"></i>
+                    </div>
+                    <div>
+                        <h3>Tech Innovation Expo</h3>
+                        <div style="color: #64748b; font-size: 0.9rem;">Innovation Lab • March 30, 2025</div>
+                    </div>
+                </div>
+                <div class="attendance-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">189</span>
+                        <span class="stat-label">Registered</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">76</span>
+                        <span class="stat-label">Checked In</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">40%</span>
+                        <span class="stat-label">Attendance Rate</span>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 40%;"></div>
+                </div>
+                <div style="text-align: center; margin-top: 0.5rem;">
+                    <small style="color: #64748b;">Capacity: 200 • Remaining: 24</small>
+                </div>
+            </div>
+
+            <div class="event-attendance-card">
+                <div class="event-header">
+                    <div class="event-icon" style="background: linear-gradient(135deg, #f59e0b, #fbbf24);">
+                        <i class="fas fa-utensils" style="color: white;"></i>
+                    </div>
+                    <div>
+                        <h3>Community Bake Sale</h3>
+                        <div style="color: #64748b; font-size: 0.9rem;">Student Plaza • April 2, 2025</div>
+                    </div>
+                </div>
+                <div class="attendance-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">156</span>
+                        <span class="stat-label">Registered</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">91</span>
+                        <span class="stat-label">Checked In</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">58%</span>
+                        <span class="stat-label">Attendance Rate</span>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 58%;"></div>
+                </div>
+                <div style="text-align: center; margin-top: 0.5rem;">
+                    <small style="color: #64748b;">Capacity: 150 • Event Full</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Check-In Section -->
+        <div class="check-in-section">
+            <h2><i class="fas fa-user-check"></i> Manual Check-In</h2>
+            <div class="check-in-form">
+                <div>
+                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Attendee Email/ID</label>
+                    <input type="text" id="checkInInput" placeholder="Enter attendee email or ID to check them in" style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 8px;">
+                </div>
+                <button class="check-in-btn" onclick="manualCheckIn()">
+                    <i class="fas fa-check-circle"></i>
+                    Check In
+                </button>
+            </div>
+            <div id="checkInMessage" style="margin-top: 1rem;"></div>
+
+            <!-- QR Code Check-In -->
+            <div style="margin-top: 2rem; text-align: center;">
+                <h3>QR Code Check-In</h3>
+                <p>Generate QR codes for your events or scan attendee QR codes using our mobile app</p>
+                <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 1rem;">
+                    <button class="check-in-btn" style="background: #667eea;">
+                        <i class="fas fa-qrcode"></i>
+                        Generate Event QR
+                    </button>
+                    <button class="check-in-btn" style="background: #10b981;">
+                        <i class="fas fa-mobile-alt"></i>
+                        Open Mobile Scanner
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Attendance Trends -->
+        <div class="attendance-trends">
+            <h2><i class="fas fa-chart-line"></i> Attendance Trends</h2>
+            <div class="trends-grid">
+                <div class="trend-item">
+                    <div class="trend-value" style="color: #10b981;">+32%</div>
+                    <div class="trend-label">vs last month</div>
+                </div>
+                <div class="trend-item">
+                    <div class="trend-value" style="color: #667eea;">78%</div>
+                    <div class="trend-label">average attendance rate</div>
+                </div>
+                <div class="trend-item">
+                    <div class="trend-value" style="color: #f59e0b;">425</div>
+                    <div class="trend-label">total registrations</div>
+                </div>
+                <div class="trend-item">
+                    <div class="trend-value" style="color: #ec4899;">15</div>
+                    <div class="trend-label">events this month</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Export Section -->
+        <div class="export-section">
+            <h2><i class="fas fa-download"></i> Export Data</h2>
+            <p>Download attendance reports and analytics for your events</p>
+            <div class="export-buttons">
+                <button class="export-btn" onclick="exportToPDF()">
+                    <i class="fas fa-file-pdf"></i>
+                    Export PDF Report
+                </button>
+                <button class="export-btn" onclick="exportToExcel()">
+                    <i class="fas fa-file-excel"></i>
+                    Export Excel
+                </button>
+                <button class="export-btn" onclick="exportToCSV()">
+                    <i class="fas fa-file-csv"></i>
+                    Export CSV
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function manualCheckIn() {
+            const input = document.getElementById('checkInInput').value;
+            const message = document.getElementById('checkInMessage');
+
+            if (!input.trim()) {
+                message.innerHTML = '<div style="color: #dc2626; font-weight: 500;">Please enter an attendee email or ID</div>';
+                return;
+            }
+
+            // Simulate check-in process
+            message.innerHTML = '<div style="color: #10b981; font-weight: 500;"><i class="fas fa-check"></i> Successfully checked in attendee: ' + input + '</div>';
+            document.getElementById('checkInInput').value = '';
+        }
+
+        function exportToPDF() {
+            alert('PDF export feature would be implemented here. This would generate a comprehensive attendance report.');
+        }
+
+        function exportToExcel() {
+            alert('Excel export feature would be implemented here. This would include attendee lists and analytics.');
+        }
+
+        function exportToCSV() {
+            alert('CSV export feature would be implemented here. This would provide raw attendance data for further analysis.');
+        }
+
+        // Simulate real-time updates
+        setInterval(() => {
+            const progressBars = document.querySelectorAll('.progress-fill');
+            progressBars.forEach(bar => {
+                const currentWidth = parseInt(bar.style.width) || 0;
+                const randomIncrease = Math.random() * 2;
+                const newWidth = Math.min(currentWidth + randomIncrease, 100);
+                bar.style.width = newWidth + '%';
+            });
+        }, 5000);
+    </script>
+</body>
+</html></content>
